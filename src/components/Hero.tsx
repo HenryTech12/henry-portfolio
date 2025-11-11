@@ -39,7 +39,7 @@ const Hero = () => {
                         </button>
 
                         <a
-                            href="../public/assets/resume.pdf"
+                            href="/assets/resume.pdf"
                             className="px-8 py-4 border-2 border-blue-600 text-blue-600 rounded-lg font-medium hover:bg-blue-50 transition-all"
                         >
                             <Download className="inline-block mr-2 w-5 h-5" />
