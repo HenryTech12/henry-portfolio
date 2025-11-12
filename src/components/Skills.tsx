@@ -1,11 +1,11 @@
-import { Server, Database, Cloud, Shield, Code, Wrench } from 'lucide-react';
+import { Server, Database, Cloud, Shield, Code, Wrench,Globe } from 'lucide-react';
 
 const Skills = () => {
     const skillCategories = [
         {
             icon: Code,
             title: 'Programming Languages',
-            skills: ['Java', 'JavaScript', 'Python', 'HTML/CSS', 'TailwindCSS'],
+            skills: ['Java', 'JavaScript', 'Python'],
             color: 'from-blue-500 to-cyan-500',
         },
         {
@@ -53,6 +53,17 @@ const Skills = () => {
                 'CI/CD',
             ],
             color: 'from-violet-500 to-blue-500',
+        },
+        {
+            icon: Globe,
+            title: 'Web Development',
+            skills: [
+                'HTML5 & CSS3',
+                'JavaScript (ES6+)',
+                'Responsive Design',
+                'Version Control (Git)',
+            ],
+            color: 'from-rose-500 to-pink-400'
         },
         {
             icon: Shield,
