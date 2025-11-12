@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Github, Linkedin, Mail } from 'lucide-react';
 
 interface HeaderProps {
@@ -52,6 +53,7 @@ const Header = ({ activeSection, setActiveSection }: HeaderProps) => {
                         Henry Fakorode
                     </button>
 
+                    {/* Desktop Menu */}
                     <nav className="hidden md:flex items-center space-x-8">
                         {navItems.map((item) => (
                             <button
@@ -64,13 +66,16 @@ const Header = ({ activeSection, setActiveSection }: HeaderProps) => {
                             >
                                 {item.label}
                                 <span
-                                    className={`absolute -bottom-1 left-0 w-full h-0.5 bg-blue-600 transform transition-transform origin-left ${activeSection === item.id ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
+                                    className={`absolute -bottom-1 left-0 w-full h-0.5 bg-blue-600 transform transition-transform origin-left ${activeSection === item.id
+                                            ? 'scale-x-100'
+                                            : 'scale-x-0 group-hover:scale-x-100'
                                         }`}
                                 />
                             </button>
                         ))}
                     </nav>
 
+                    {/* Desktop Icons */}
                     <div className="hidden md:flex items-center space-x-4">
                         <a
                             href="https://github.com/HenryTech12"
@@ -96,22 +101,36 @@ const Header = ({ activeSection, setActiveSection }: HeaderProps) => {
                         </a>
                     </div>
 
+                    {/* Mobile Menu Button */}
                     <button
-                        className="md:hidden text-gray-700"
+                        className="md:hidden text-gray-700 transition-transform duration-300"
                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                     >
-                        {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                        {isMobileMenuOpen ? (
+                            <X className="w-6 h-6 rotate-90 transition-transform duration-300" />
+                        ) : (
+                            <Menu className="w-6 h-6 rotate-0 transition-transform duration-300" />
+                        )}
                     </button>
                 </div>
+            </div>
 
+            {/* Mobile Menu Overlay */}
+            <AnimatePresence>
                 {isMobileMenuOpen && (
-                    <div className="md:hidden mt-4 pb-4 border-t border-gray-200">
-                        <nav className="flex flex-col space-y-4 mt-4">
+                    <motion.div
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.3 }}
+                        className="fixed inset-x-0 top-[72px] z-40 bg-white/90 backdrop-blur-lg shadow-lg border-t border-gray-200"
+                    >
+                        <nav className="flex flex-col items-center space-y-6 py-6">
                             {navItems.map((item) => (
                                 <button
                                     key={item.id}
                                     onClick={() => scrollToSection(item.id)}
-                                    className={`text-left text-sm font-medium transition-colors ${activeSection === item.id
+                                    className={`text-lg font-medium transition-colors ${activeSection === item.id
                                             ? 'text-blue-600'
                                             : 'text-gray-700 hover:text-blue-600'
                                         }`}
@@ -119,7 +138,7 @@ const Header = ({ activeSection, setActiveSection }: HeaderProps) => {
                                     {item.label}
                                 </button>
                             ))}
-                            <div className="flex items-center space-x-4 pt-4">
+                            <div className="flex items-center space-x-6 pt-4">
                                 <a
                                     href="https://github.com/HenryTech12"
                                     target="_blank"
@@ -144,9 +163,9 @@ const Header = ({ activeSection, setActiveSection }: HeaderProps) => {
                                 </a>
                             </div>
                         </nav>
-                    </div>
+                    </motion.div>
                 )}
-            </div>
+            </AnimatePresence>
         </header>
     );
 };
