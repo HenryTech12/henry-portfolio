@@ -7,7 +7,7 @@ const Projects = () => {
             period: 'Oct 2025',
             description:
                 'Developed a full-stack WhatsApp Clone in 3 days, featuring real-time chat, user authentication, online/offline status, AI assistant integration, and real-time translation for multilingual communication. Fully containerized with Docker.',
-            technologies: ['Spring Boot', 'WebSocket', 'Docker', 'Real-time', 'AI Integration'],
+            technologies: ['Spring Boot', 'WebSocket', 'Docker','React JS', 'Tailwind CSS', 'Real-time', 'AI Integration'],
             metrics: ['40% faster deployment', '3-day development cycle', 'Multi-language support'],
             gradient: 'from-blue-500 to-cyan-500',
         },
@@ -31,7 +31,7 @@ const Projects = () => {
             period: 'May 2025 - Aug 2025',
             description:
                 'Web-based platform streamlining patient requests and ambulance dispatch with ETA-based assignment logic, role-based authentication, and automated email notifications.',
-            technologies: ['Spring Boot', 'Thymeleaf', 'MySQL', 'Spring Security', 'Email API'],
+            technologies: ['Spring Boot', 'Thymeleaf' 'CSS3' , 'MySQL', 'Spring Security', 'Email API'],
             metrics: ['30-min dispatch guarantee', '40% reduced manual efforts', '25% faster response'],
             gradient: 'from-blue-600 to-cyan-600',
         },
@@ -40,7 +40,7 @@ const Projects = () => {
             period: 'May 2025',
             description:
                 'Collaborated with a team to build the backend system for an AI-powered crop disease diagnosis platform using Python Django, integrating machine learning models through RESTful APIs for image upload and prediction retrieval. Developed Twilio webhooks to enable SMS bot support, offline mode, and WhatsApp bot interactions for seamless user communication.',
-            technologies: ['Django', 'Python', 'RESTful APIs', 'ML Integration', 'Image Processing', 'Twilio API', 'WhatsApp Bot'],
+            technologies: ['Django', 'Python', 'RESTful APIs','React JS', 'Tailwind CSS', 'ML Integration', 'Image Processing', 'Twilio API', 'WhatsApp Bot'],
             metrics: ['AI-powered diagnosis', 'Real-time predictions', 'SMS & WhatsApp bot support', 'Offline mode enabled'],
             gradient: 'from-green-500 to-emerald-500',
         },
@@ -58,7 +58,7 @@ const Projects = () => {
             period: 'Feb 2025',
             description:
                 'Spring Boot application to efficiently validate email addresses, increasing user authenticity by 40% and reducing fake or disposable email signups by 35%, strengthening overall system security.',
-            technologies: ['Spring Boot', 'Email Validation', 'Security', 'API Integration'],
+            technologies: ['Spring Boot', 'Email Validation', 'Security', 'API Integration', 'HTML', 'CSS3'],
             metrics: ['40% authenticity increase', '35% fake email reduction', 'Enhanced security'],
             gradient: 'from-cyan-500 to-blue-500',
         },
