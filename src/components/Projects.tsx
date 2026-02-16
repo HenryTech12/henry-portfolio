@@ -31,7 +31,7 @@ const Projects = () => {
             period: 'May 2025 - Aug 2025',
             description:
                 'Web-based platform streamlining patient requests and ambulance dispatch with ETA-based assignment logic, role-based authentication, and automated email notifications.',
-            technologies: ['Spring Boot', 'Thymeleaf' 'CSS3' , 'MySQL', 'Spring Security', 'Email API'],
+            technologies: ['Spring Boot', 'Thymeleaf', 'CSS3' , 'MySQL', 'Spring Security', 'Email API'],
             metrics: ['30-min dispatch guarantee', '40% reduced manual efforts', '25% faster response'],
             gradient: 'from-blue-600 to-cyan-600',
         },
