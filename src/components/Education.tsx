@@ -2,6 +2,7 @@ import portfolio from '../data/portfolio.json';
 import type { PortfolioData } from '../data/portfolio.types';
 import SectionHeading from './ui/SectionHeading';
 import CornerFrame from './ui/CornerFrame';
+import Reveal from './ui/Reveal';
 
 const data = portfolio as PortfolioData;
 
@@ -22,8 +23,9 @@ const Education = () => {
                         </h3>
                         <div className="space-y-4">
                             {education.map((edu, index) => (
-                                <div
+                                <Reveal
                                     key={index}
+                                    delay={index * 0.06}
                                     className="bg-surface border border-border hover:border-accent/40 transition-colors p-6"
                                 >
                                     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -44,7 +46,7 @@ const Education = () => {
                                             </span>
                                         </div>
                                     </div>
-                                </div>
+                                </Reveal>
                             ))}
                         </div>
                     </div>
@@ -57,17 +59,19 @@ const Education = () => {
                         </h3>
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {certifications.map((cert, index) => (
-                                <CornerFrame key={index} className="bg-surface p-6">
-                                    <h4 className="text-sm font-bold text-ink-primary mb-1.5">{cert.title}</h4>
-                                    <p className="text-ink-muted text-sm mb-2">{cert.issuer}</p>
-                                    {(cert.issued || cert.expires) && (
-                                        <p className="text-ink-faint text-xs font-mono">
-                                            {cert.issued && `issued ${cert.issued}`}
-                                            {cert.issued && cert.expires && ' · '}
-                                            {cert.expires && `expires ${cert.expires}`}
-                                        </p>
-                                    )}
-                                </CornerFrame>
+                                <Reveal key={index} delay={index * 0.05}>
+                                    <CornerFrame className="bg-surface p-6 h-full">
+                                        <h4 className="text-sm font-bold text-ink-primary mb-1.5">{cert.title}</h4>
+                                        <p className="text-ink-muted text-sm mb-2">{cert.issuer}</p>
+                                        {(cert.issued || cert.expires) && (
+                                            <p className="text-ink-faint text-xs font-mono">
+                                                {cert.issued && `issued ${cert.issued}`}
+                                                {cert.issued && cert.expires && ' · '}
+                                                {cert.expires && `expires ${cert.expires}`}
+                                            </p>
+                                        )}
+                                    </CornerFrame>
+                                </Reveal>
                             ))}
                         </div>
                     </div>

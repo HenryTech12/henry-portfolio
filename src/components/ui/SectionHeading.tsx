@@ -1,3 +1,5 @@
+import Reveal from './Reveal';
+
 interface SectionHeadingProps {
     eyebrow?: string;
     title: string;
@@ -9,7 +11,7 @@ const SectionHeading = ({ eyebrow, title, description, align = 'center' }: Secti
     const isCenter = align === 'center';
 
     return (
-        <div className={`mb-16 ${isCenter ? 'text-center' : 'text-left'}`}>
+        <Reveal className={`mb-16 ${isCenter ? 'text-center' : 'text-left'}`}>
             {eyebrow && (
                 <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent mb-3">
                     {'// '}
@@ -23,7 +25,7 @@ const SectionHeading = ({ eyebrow, title, description, align = 'center' }: Secti
                     {description}
                 </p>
             )}
-        </div>
+        </Reveal>
     );
 };
 

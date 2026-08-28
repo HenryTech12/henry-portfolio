@@ -3,6 +3,7 @@ import portfolio from '../data/portfolio.json';
 import type { PortfolioData } from '../data/portfolio.types';
 import SectionHeading from './ui/SectionHeading';
 import TechBadge from './ui/TechBadge';
+import Reveal from './ui/Reveal';
 import { getHandle } from '../lib/format';
 
 const data = portfolio as PortfolioData;
@@ -18,7 +19,7 @@ const About = () => {
 
                 <div className="grid lg:grid-cols-5 gap-12 items-start mb-12">
                     {profile.photoUrl && (
-                        <div className="lg:col-span-2">
+                        <Reveal className="lg:col-span-2">
                             <div className="border border-border bg-surface p-2 hover:border-accent/40 transition-colors">
                                 <div className="relative overflow-hidden">
                                     <img
@@ -32,10 +33,13 @@ const About = () => {
                             <p className="mt-3 font-mono text-xs text-ink-faint">
                                 {`[ ~/${handle}/profile.jpg ]`}
                             </p>
-                        </div>
+                        </Reveal>
                     )}
 
-                    <div className={profile.photoUrl ? 'lg:col-span-3' : 'lg:col-span-5'}>
+                    <Reveal
+                        delay={profile.photoUrl ? 0.1 : 0}
+                        className={profile.photoUrl ? 'lg:col-span-3' : 'lg:col-span-5'}
+                    >
                         <h3 className="text-xl font-bold text-ink-primary mb-6">
                             Backend-focused, systems-minded
                         </h3>
@@ -54,11 +58,11 @@ const About = () => {
                                 </div>
                             </div>
                         )}
-                    </div>
+                    </Reveal>
                 </div>
 
                 {profile.topSkills.length > 0 && (
-                    <div>
+                    <Reveal>
                         <p className="font-mono text-xs uppercase tracking-widest text-ink-muted mb-4">
                             core_skills
                         </p>
@@ -67,7 +71,7 @@ const About = () => {
                                 <TechBadge key={skill}>{skill}</TechBadge>
                             ))}
                         </div>
-                    </div>
+                    </Reveal>
                 )}
             </div>
         </section>

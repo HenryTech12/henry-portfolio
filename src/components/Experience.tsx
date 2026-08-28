@@ -2,6 +2,7 @@ import { Briefcase, MapPin } from 'lucide-react';
 import portfolio from '../data/portfolio.json';
 import type { PortfolioData } from '../data/portfolio.types';
 import SectionHeading from './ui/SectionHeading';
+import Reveal from './ui/Reveal';
 
 const data = portfolio as PortfolioData;
 
@@ -22,7 +23,7 @@ const Experience = () => {
                     />
                     <div className="space-y-12">
                         {experience.map((exp, index) => (
-                            <div key={index} className="relative pl-10">
+                            <Reveal key={index} delay={index * 0.08} className="relative pl-10">
                                 <span className="absolute left-0 top-1.5 w-[11px] h-[11px] rotate-45 bg-canvas border border-accent" />
 
                                 <div className="font-mono text-xs text-ink-muted mb-2 tracking-wide">
@@ -48,7 +49,7 @@ const Experience = () => {
                                         </li>
                                     ))}
                                 </ul>
-                            </div>
+                            </Reveal>
                         ))}
                     </div>
                 </div>

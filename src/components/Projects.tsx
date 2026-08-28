@@ -4,6 +4,7 @@ import portfolio from '../data/portfolio.json';
 import type { PortfolioData, Project } from '../data/portfolio.types';
 import SectionHeading from './ui/SectionHeading';
 import TechBadge from './ui/TechBadge';
+import Reveal from './ui/Reveal';
 
 const data = portfolio as PortfolioData;
 
@@ -41,8 +42,8 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
 
     return (
         <div
-            className={`bg-surface border overflow-hidden transition-colors ${project.pinned
-                    ? 'border-accent/50 shadow-glow lg:col-span-2'
+            className={`h-full bg-surface border overflow-hidden transition-colors ${project.pinned
+                    ? 'border-accent/50 shadow-glow'
                     : 'border-border hover:border-accent/40'
                 }`}
         >
@@ -192,7 +193,13 @@ const Projects = () => {
 
                 <div className="grid md:grid-cols-2 gap-6">
                     {sorted.map((project, i) => (
-                        <ProjectCard key={project.slug} project={project} index={i} />
+                        <Reveal
+                            key={project.slug}
+                            delay={i * 0.06}
+                            className={project.pinned ? 'lg:col-span-2' : ''}
+                        >
+                            <ProjectCard project={project} index={i} />
+                        </Reveal>
                     ))}
                 </div>
 

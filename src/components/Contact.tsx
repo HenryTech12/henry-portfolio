@@ -5,6 +5,7 @@ import portfolio from '../data/portfolio.json';
 import type { PortfolioData } from '../data/portfolio.types';
 import SectionHeading from './ui/SectionHeading';
 import CornerFrame from './ui/CornerFrame';
+import Reveal from './ui/Reveal';
 
 const data = portfolio as PortfolioData;
 
@@ -115,7 +116,7 @@ const Contact = () => {
                 />
 
                 <div className="grid lg:grid-cols-2 gap-12">
-                    <div>
+                    <Reveal>
                         <h3 className="font-mono text-xs uppercase tracking-widest text-ink-muted mb-6">
                             contact_information
                         </h3>
@@ -180,9 +181,9 @@ const Contact = () => {
                                 backend development, full-stack engineering, and software development roles.
                             </p>
                         </CornerFrame>
-                    </div>
+                    </Reveal>
 
-                    <div>
+                    <Reveal delay={0.1}>
                         <h3 className="font-mono text-xs uppercase tracking-widest text-ink-muted mb-6">
                             send_a_message
                         </h3>
@@ -262,7 +263,7 @@ const Contact = () => {
                                 <Send className="ml-2 w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                             </button>
                         </form>
-                    </div>
+                    </Reveal>
                 </div>
             </div>
         </section>
