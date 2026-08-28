@@ -1,7 +1,7 @@
-import { GraduationCap, Award, Calendar } from 'lucide-react';
 import portfolio from '../data/portfolio.json';
 import type { PortfolioData } from '../data/portfolio.types';
 import SectionHeading from './ui/SectionHeading';
+import CornerFrame from './ui/CornerFrame';
 
 const data = portfolio as PortfolioData;
 
@@ -11,44 +11,37 @@ const Education = () => {
     if (education.length === 0 && certifications.length === 0) return null;
 
     return (
-        <section id="education" className="py-20 px-4 sm:px-6 lg:px-8 bg-background">
+        <section id="education" className="py-20 px-4 sm:px-6 lg:px-8 bg-canvas">
             <div className="max-w-7xl mx-auto">
-                <SectionHeading eyebrow="Background" title="Education & Certifications" />
+                <SectionHeading eyebrow="background" title="Education & Certifications" />
 
                 {education.length > 0 && (
                     <div className="mb-16">
-                        <h3 className="text-2xl font-bold text-white mb-8 flex items-center">
-                            <GraduationCap className="w-6 h-6 mr-2 text-accent-cyan" />
-                            Academic Background
+                        <h3 className="font-mono text-xs uppercase tracking-widest text-ink-muted mb-6">
+                            academic_background
                         </h3>
-                        <div className="space-y-6">
+                        <div className="space-y-4">
                             {education.map((edu, index) => (
                                 <div
                                     key={index}
-                                    className="bg-surface rounded-xl border border-border hover:border-accent-cyan/30 transition-colors overflow-hidden"
+                                    className="bg-surface border border-border hover:border-accent/40 transition-colors p-6"
                                 >
-                                    <div className="h-1.5 bg-accent-gradient" />
-                                    <div className="p-6">
-                                        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                                            <div>
-                                                <h4 className="text-xl font-bold text-white mb-2">{edu.degree}</h4>
-                                                <p className="text-slate-300 font-medium mb-1">{edu.institution}</p>
-                                                <p className="text-slate-500 text-sm font-mono">{edu.location}</p>
-                                            </div>
-                                            <div className="flex flex-col items-start md:items-end gap-2">
-                                                <div className="flex items-center text-slate-500">
-                                                    <Calendar className="w-4 h-4 mr-2" />
-                                                    <span className="text-sm font-mono">{edu.period}</span>
-                                                </div>
-                                                <span
-                                                    className={`px-3 py-1 rounded-full text-xs font-mono font-medium ${edu.status === 'In Progress'
-                                                            ? 'bg-accent-indigo/15 text-accent-indigo'
-                                                            : 'bg-accent-teal/15 text-accent-teal'
-                                                        }`}
-                                                >
-                                                    {edu.status}
-                                                </span>
-                                            </div>
+                                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                                        <div>
+                                            <h4 className="text-lg font-bold text-ink-primary mb-1">{edu.degree}</h4>
+                                            <p className="text-ink-body text-sm mb-1">{edu.institution}</p>
+                                            <p className="text-ink-muted text-xs font-mono">{edu.location}</p>
+                                        </div>
+                                        <div className="flex flex-col items-start md:items-end gap-2">
+                                            <span className="text-xs font-mono text-ink-muted">{edu.period}</span>
+                                            <span
+                                                className={`px-2.5 py-1 text-[0.65rem] font-mono uppercase tracking-widest border ${edu.status === 'In Progress'
+                                                        ? 'border-accent/50 text-accent'
+                                                        : 'border-ink-faint/50 text-ink-muted'
+                                                    }`}
+                                            >
+                                                {edu.status}
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -59,29 +52,22 @@ const Education = () => {
 
                 {certifications.length > 0 && (
                     <div>
-                        <h3 className="text-2xl font-bold text-white mb-8 flex items-center">
-                            <Award className="w-6 h-6 mr-2 text-accent-cyan" />
-                            Professional Certifications
+                        <h3 className="font-mono text-xs uppercase tracking-widest text-ink-muted mb-6">
+                            professional_certifications
                         </h3>
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {certifications.map((cert, index) => (
-                                <div
-                                    key={index}
-                                    className="bg-surface rounded-xl p-6 border border-border hover:border-accent-cyan/40 transition-colors"
-                                >
-                                    <div className="w-12 h-12 bg-accent-gradient rounded-lg flex items-center justify-center mb-4">
-                                        <Award className="w-6 h-6 text-white" />
-                                    </div>
-                                    <h4 className="text-base font-bold text-white mb-2">{cert.title}</h4>
-                                    <p className="text-slate-400 text-sm mb-2">{cert.issuer}</p>
+                                <CornerFrame key={index} className="bg-surface p-6">
+                                    <h4 className="text-sm font-bold text-ink-primary mb-1.5">{cert.title}</h4>
+                                    <p className="text-ink-muted text-sm mb-2">{cert.issuer}</p>
                                     {(cert.issued || cert.expires) && (
-                                        <p className="text-slate-600 text-xs font-mono">
-                                            {cert.issued && `Issued ${cert.issued}`}
+                                        <p className="text-ink-faint text-xs font-mono">
+                                            {cert.issued && `issued ${cert.issued}`}
                                             {cert.issued && cert.expires && ' · '}
-                                            {cert.expires && `Expires ${cert.expires}`}
+                                            {cert.expires && `expires ${cert.expires}`}
                                         </p>
                                     )}
-                                </div>
+                                </CornerFrame>
                             ))}
                         </div>
                     </div>

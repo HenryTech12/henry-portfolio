@@ -8,31 +8,116 @@
   }
 
   body {
-    @apply antialiased bg-background text-slate-200 font-sans;
+    @apply antialiased bg-canvas text-ink-body font-sans;
   }
 
   p {
     word-break: normal;
     overflow-wrap: normal;
   }
+
+  ::selection {
+    @apply bg-accent/25 text-ink-primary;
+  }
 }
 
 @layer utilities {
-  .bg-clip-text {
-    -webkit-background-clip: text;
-    background-clip: text;
-  }
-
-  .text-gradient-accent {
-    @apply bg-accent-gradient bg-clip-text text-transparent;
-  }
-
-  .text-gradient-chrome {
-    @apply bg-chrome-gradient bg-clip-text text-transparent;
-  }
-
   .body-text {
     word-break: normal;
     overflow-wrap: normal;
+  }
+
+  /* Faint blueprint dot-grid, used behind the hero */
+  .bg-dot-grid {
+    background-image: radial-gradient(circle, rgba(244, 244, 245, 0.08) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  /* Four short border segments that "complete" a rectangle in the viewer's eye */
+  .corner-frame {
+    position: relative;
+  }
+
+  .corner-frame::before,
+  .corner-frame::after,
+  .corner-frame > .corner-frame-br,
+  .corner-frame > .corner-frame-bl {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-color: theme('colors.border.DEFAULT');
+    transition: border-color 150ms ease-out;
+    pointer-events: none;
+  }
+
+  .corner-frame::before {
+    top: -1px;
+    left: -1px;
+    border-top: 1px solid;
+    border-left: 1px solid;
+  }
+
+  .corner-frame::after {
+    top: -1px;
+    right: -1px;
+    border-top: 1px solid;
+    border-right: 1px solid;
+  }
+
+  .corner-frame > .corner-frame-br {
+    bottom: -1px;
+    right: -1px;
+    border-bottom: 1px solid;
+    border-right: 1px solid;
+  }
+
+  .corner-frame > .corner-frame-bl {
+    bottom: -1px;
+    left: -1px;
+    border-bottom: 1px solid;
+    border-left: 1px solid;
+  }
+
+  .corner-frame:hover::before,
+  .corner-frame:hover::after,
+  .corner-frame:hover > .corner-frame-br,
+  .corner-frame:hover > .corner-frame-bl {
+    border-color: theme('colors.accent.DEFAULT');
+  }
+}
+
+@keyframes blink-caret {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.animate-caret {
+  animation: blink-caret 1s step-end infinite;
+}
+
+@keyframes status-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.animate-status-pulse {
+  animation: status-pulse 2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-caret,
+  .animate-status-pulse {
+    animation: none;
   }
 }

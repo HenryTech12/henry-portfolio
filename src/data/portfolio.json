@@ -5,6 +5,7 @@
     "headline": "Backend Engineer | Java, Spring Boot, Apache Kafka | Building Scalable, Event-Driven Systems | 7× Hackathon Winner/Runner-Up",
     "bio": "I'm a backend engineer who works primarily in Java and Spring Boot, with hands-on experience building event-driven systems using Apache Kafka, Redis, and PostgreSQL. Across three backend internships and several independent projects, I've designed database schemas, secured APIs, and shipped systems handling real production load.",
     "topSkills": ["Core Java", "Spring Boot", "Systems Design"],
+    "githubProjectCount": 105,
     "social": {
       "github": "https://github.com/HenryTech12",
       "linkedin": "https://linkedin.com/in/fakorode-henry",
@@ -60,7 +61,12 @@
   ],
   "honors": [
     {
-      "title": "2nd Runner-Up (Overall) & Winner, Digital Identity & Trust Track",
+      "title": "2nd Runner-Up (Overall)",
+      "organization": "TiT 6.0 Hackathon (QoreID-sponsored)",
+      "date": "Aug 2026"
+    },
+    {
+      "title": "Winner, Digital Identity & Trust Track",
       "organization": "TiT 6.0 Hackathon (QoreID-sponsored)",
       "date": "Aug 2026"
     },

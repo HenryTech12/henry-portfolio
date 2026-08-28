@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { ExternalLink, Github, ChevronDown, AlertCircle, Compass, Hammer, TrendingUp, RotateCcw, Sparkles } from 'lucide-react';
+import { ExternalLink, Github } from 'lucide-react';
 import portfolio from '../data/portfolio.json';
 import type { PortfolioData, Project } from '../data/portfolio.types';
 import SectionHeading from './ui/SectionHeading';
@@ -7,172 +7,205 @@ import TechBadge from './ui/TechBadge';
 
 const data = portfolio as PortfolioData;
 
+function buildDiagram(stack: string[]): string {
+    const nodes = stack.slice(0, 4);
+    return nodes.map((n) => `[ ${n} ]`).join('  ──▶  ');
+}
+
+function getTeaser(project: Project): string | null {
+    if (project.problem) return project.problem;
+    if (project.execution.length > 0) return project.execution[0];
+    return null;
+}
+
 interface DetailSectionProps {
-    icon: typeof AlertCircle;
     label: string;
     defaultOpen?: boolean;
     children: ReactNode;
 }
 
-const DetailSection = ({ icon: Icon, label, defaultOpen, children }: DetailSectionProps) => (
+const DetailSection = ({ label, defaultOpen, children }: DetailSectionProps) => (
     <details className="group border-t border-border/60" open={defaultOpen}>
-        <summary className="flex items-center justify-between cursor-pointer list-none py-3.5 px-6 sm:px-8 text-sm font-semibold text-slate-200 hover:text-accent-cyan transition-colors [&::-webkit-details-marker]:hidden">
-            <span className="flex items-center gap-2">
-                <Icon className="w-4 h-4 text-accent-cyan flex-shrink-0" />
-                {label}
-            </span>
-            <ChevronDown className="w-4 h-4 text-slate-500 transition-transform group-open:rotate-180 flex-shrink-0" />
+        <summary className="flex items-center justify-between cursor-pointer list-none py-3.5 px-6 sm:px-8 font-mono text-xs uppercase tracking-widest text-ink-body hover:text-accent transition-colors [&::-webkit-details-marker]:hidden">
+            <span>[ {label} ]</span>
+            <span className="text-ink-muted group-open:hidden">+</span>
+            <span className="text-accent hidden group-open:inline">−</span>
         </summary>
         <div className="px-6 sm:px-8 pb-5">{children}</div>
     </details>
 );
 
-const ProjectCard = ({ project }: { project: Project }) => (
-    <div
-        className={`bg-surface rounded-2xl border overflow-hidden transition-colors ${project.pinned
-                ? 'border-accent-cyan/50 shadow-xl shadow-accent-cyan/10 lg:col-span-2'
-                : 'border-border hover:border-accent-cyan/30'
-            }`}
-    >
-        <div className="h-1.5 bg-accent-gradient" />
-        <div className="p-6 sm:p-8 pb-0">
-            {project.pinned && (
-                <span className="inline-flex items-center gap-1.5 mb-4 px-3 py-1 rounded-full text-xs font-mono uppercase tracking-wide bg-accent-gradient text-white">
-                    <Sparkles className="w-3.5 h-3.5" />
-                    Featured Project
-                </span>
-            )}
+const ProjectCard = ({ project, index }: { project: Project; index: number }) => {
+    const diagram = buildDiagram(project.stack);
+    const teaser = getTeaser(project);
 
-            <div className="flex flex-wrap items-start justify-between gap-3 mb-2">
-                <h3 className="text-xl sm:text-2xl font-bold text-white">{project.title}</h3>
-                <div className="flex items-center gap-3 flex-shrink-0">
-                    {project.liveUrl && (
-                        <a
-                            href={project.liveUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-accent-cyan hover:text-accent-indigo transition-colors"
-                            aria-label="View live project"
-                        >
-                            <ExternalLink className="w-5 h-5" />
-                        </a>
-                    )}
-                    {project.repoUrl && (
-                        <a
-                            href={project.repoUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-accent-cyan hover:text-accent-indigo transition-colors"
-                            aria-label="View source on GitHub"
-                        >
-                            <Github className="w-5 h-5" />
-                        </a>
-                    )}
-                </div>
-            </div>
+    return (
+        <div
+            className={`bg-surface border overflow-hidden transition-colors ${project.pinned
+                    ? 'border-accent/50 shadow-glow lg:col-span-2'
+                    : 'border-border hover:border-accent/40'
+                }`}
+        >
+            <div className={`${project.pinned ? 'lg:flex lg:items-start' : ''}`}>
+                {diagram && (
+                    <div
+                        className={`bg-canvas border-b border-border/60 px-5 py-6 flex items-center overflow-x-auto ${project.pinned ? 'lg:w-[42%] lg:border-b-0 lg:border-r lg:sticky lg:top-24' : ''
+                            }`}
+                    >
+                        <pre className="font-mono text-[0.7rem] sm:text-xs text-ink-muted whitespace-pre">
+                            <span className="text-accent">{diagram}</span>
+                        </pre>
+                    </div>
+                )}
 
-            {project.subtitle && (
-                <p className="text-sm text-slate-500 font-mono mb-1">{project.subtitle}</p>
-            )}
-            {project.period && (
-                <p className="text-xs text-slate-600 font-mono mb-4">{project.period}</p>
-            )}
+                <div className={project.pinned ? 'lg:flex-1' : ''}>
+                    <div className="px-6 sm:px-8 pt-6">
+                        <div className="flex items-center justify-between mb-3">
+                            <span className="font-mono text-xs text-ink-muted tracking-wide">
+                                {`project_${String(index + 1).padStart(2, '0')}`}
+                                {project.pinned && <span className="text-accent"> · featured</span>}
+                            </span>
+                            <div className="flex items-center gap-3 flex-shrink-0">
+                                {project.liveUrl && (
+                                    <a
+                                        href={project.liveUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-ink-muted hover:text-accent transition-colors"
+                                        aria-label="View live project"
+                                    >
+                                        <ExternalLink className="w-4 h-4" />
+                                    </a>
+                                )}
+                                {project.repoUrl && (
+                                    <a
+                                        href={project.repoUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-ink-muted hover:text-accent transition-colors"
+                                        aria-label="View source on GitHub"
+                                    >
+                                        <Github className="w-4 h-4" />
+                                    </a>
+                                )}
+                            </div>
+                        </div>
 
-            <div className="flex flex-wrap gap-2 mb-6">
-                {project.stack.map((tech) => (
-                    <TechBadge key={tech}>{tech}</TechBadge>
-                ))}
-            </div>
-        </div>
+                        <h3 className="text-lg sm:text-xl font-bold text-ink-primary mb-1">{project.title}</h3>
+                        {project.subtitle && (
+                            <p className="text-xs text-ink-muted font-mono mb-1">{project.subtitle}</p>
+                        )}
+                        {project.period && (
+                            <p className="text-xs text-ink-faint font-mono mb-4">{project.period}</p>
+                        )}
+                        {!project.subtitle && !project.period && <div className="mb-4" />}
 
-        <div className="mt-2">
-            {project.problem && (
-                <DetailSection icon={AlertCircle} label="The Problem">
-                    <p className="text-sm text-slate-400 leading-relaxed body-text">{project.problem}</p>
-                </DetailSection>
-            )}
+                        {teaser && (
+                            <p className="text-sm text-ink-body leading-relaxed body-text mb-4 line-clamp-2">
+                                {teaser}
+                            </p>
+                        )}
 
-            {project.process && (
-                <DetailSection icon={Compass} label="Thinking Process">
-                    <p className="text-sm text-slate-400 leading-relaxed body-text">{project.process}</p>
-                </DetailSection>
-            )}
-
-            {project.execution.length > 0 && (
-                <DetailSection icon={Hammer} label="What He Built" defaultOpen>
-                    <ul className="space-y-2.5">
-                        {project.execution.map((item, i) => (
-                            <li key={i} className="flex items-start text-sm text-slate-400 leading-relaxed body-text">
-                                <span className="inline-block w-1.5 h-1.5 bg-accent-cyan rounded-full mt-1.5 mr-3 flex-shrink-0" />
-                                {item}
-                            </li>
-                        ))}
-                    </ul>
-                    {project.scale && project.scale.length > 0 && (
-                        <div className="mt-4 pt-4 border-t border-border/60 space-y-1.5">
-                            {project.scale.map((line, i) => (
-                                <p key={i} className="text-xs font-mono text-slate-500">{line}</p>
+                        <div className="flex flex-wrap gap-2 mb-2">
+                            {project.stack.map((tech) => (
+                                <TechBadge key={tech}>{tech}</TechBadge>
                             ))}
                         </div>
-                    )}
-                </DetailSection>
-            )}
+                    </div>
 
-            {project.results.length > 0 && (
-                <DetailSection icon={TrendingUp} label="Results" defaultOpen>
-                    <ul className="space-y-2.5">
-                        {project.results.map((item, i) => (
-                            <li key={i} className="flex items-start text-sm text-slate-300 leading-relaxed body-text">
-                                <span className="inline-block w-1.5 h-1.5 bg-accent-indigo rounded-full mt-1.5 mr-3 flex-shrink-0" />
-                                {item}
-                            </li>
-                        ))}
-                    </ul>
-                </DetailSection>
-            )}
+                    <div className="mt-2">
+                        {project.problem && (
+                            <DetailSection label="problem">
+                                <p className="text-sm text-ink-body leading-relaxed body-text">{project.problem}</p>
+                            </DetailSection>
+                        )}
 
-            {project.reflection && (
-                <DetailSection icon={RotateCcw} label="What He'd Do Differently">
-                    <p className="text-sm text-slate-400 leading-relaxed body-text">{project.reflection}</p>
-                </DetailSection>
-            )}
+                        {project.process && (
+                            <DetailSection label="process">
+                                <p className="text-sm text-ink-body leading-relaxed body-text">{project.process}</p>
+                            </DetailSection>
+                        )}
+
+                        {project.execution.length > 0 && (
+                            <DetailSection label="execution" defaultOpen>
+                                <ul className="space-y-2.5">
+                                    {project.execution.map((item, i) => (
+                                        <li key={i} className="flex items-start gap-2.5 text-sm text-ink-body leading-relaxed body-text">
+                                            <span className="text-accent font-mono flex-shrink-0 select-none">{'>'}</span>
+                                            {item}
+                                        </li>
+                                    ))}
+                                </ul>
+                                {project.scale && project.scale.length > 0 && (
+                                    <div className="mt-4 pt-4 border-t border-border/60 space-y-1.5">
+                                        {project.scale.map((line, i) => (
+                                            <p key={i} className="text-xs font-mono text-ink-muted">
+                                                {line}
+                                            </p>
+                                        ))}
+                                    </div>
+                                )}
+                            </DetailSection>
+                        )}
+
+                        {project.results.length > 0 && (
+                            <DetailSection label="results" defaultOpen>
+                                <ul className="space-y-2.5">
+                                    {project.results.map((item, i) => (
+                                        <li key={i} className="flex items-start gap-2.5 text-sm text-ink-primary leading-relaxed body-text">
+                                            <span className="text-accent font-mono flex-shrink-0 select-none">{'>'}</span>
+                                            {item}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </DetailSection>
+                        )}
+
+                        {project.reflection && (
+                            <DetailSection label="reflection">
+                                <p className="text-sm text-ink-body leading-relaxed body-text">{project.reflection}</p>
+                            </DetailSection>
+                        )}
+                    </div>
+                    <div className="h-2" />
+                </div>
+            </div>
         </div>
-        <div className="h-2" />
-    </div>
-);
+    );
+};
 
 const Projects = () => {
-    const { projects } = data;
+    const { projects, profile } = data;
 
     if (projects.length === 0) return null;
 
     const sorted = [...projects].sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0));
 
     return (
-        <section id="projects" className="py-20 px-4 sm:px-6 lg:px-8 bg-background">
+        <section id="projects" className="py-20 px-4 sm:px-6 lg:px-8 bg-canvas">
             <div className="max-w-7xl mx-auto">
                 <SectionHeading
-                    eyebrow="Work"
+                    eyebrow="work"
                     title="Featured Projects"
                     description="Real-world systems demonstrating backend architecture, event-driven design, and full-stack delivery."
                 />
 
-                <div className="grid md:grid-cols-2 gap-8">
-                    {sorted.map((project) => (
-                        <ProjectCard key={project.slug} project={project} />
+                <div className="grid md:grid-cols-2 gap-6">
+                    {sorted.map((project, i) => (
+                        <ProjectCard key={project.slug} project={project} index={i} />
                     ))}
                 </div>
 
                 <div className="mt-12 text-center">
                     <a
-                        href={data.profile.social.github}
+                        href={profile.social.github}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center px-8 py-4 bg-surface border border-border text-white rounded-lg font-medium hover:border-accent-cyan/50 transition-colors shadow-lg"
+                        className="inline-flex items-center px-6 py-3.5 bg-canvas border border-border text-ink-body rounded-md font-mono text-sm hover:border-accent/60 hover:text-accent transition-colors"
                     >
-                        <Github className="w-5 h-5 mr-2" />
-                        View More on GitHub
-                        <ExternalLink className="w-4 h-4 ml-2" />
+                        <Github className="w-4 h-4 mr-2" />
+                        browse {profile.githubProjectCount}+ repositories on github
+                        <ExternalLink className="w-3.5 h-3.5 ml-2" />
                     </a>
                 </div>
             </div>

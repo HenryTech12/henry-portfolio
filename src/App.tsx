@@ -43,7 +43,7 @@ function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-canvas">
       <Header activeSection={activeSection} setActiveSection={setActiveSection} />
       <main>
         <Hero />

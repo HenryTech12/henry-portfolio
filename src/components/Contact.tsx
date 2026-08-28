@@ -4,6 +4,7 @@ import { Mail, Phone, MapPin, Send, Github, Linkedin } from 'lucide-react';
 import portfolio from '../data/portfolio.json';
 import type { PortfolioData } from '../data/portfolio.types';
 import SectionHeading from './ui/SectionHeading';
+import CornerFrame from './ui/CornerFrame';
 
 const data = portfolio as PortfolioData;
 
@@ -47,19 +48,19 @@ const Contact = () => {
     const contactInfo = [
         {
             icon: Mail,
-            label: 'Email',
+            label: 'email',
             value: profile.social.email,
             href: `mailto:${profile.social.email}`,
         },
         {
             icon: Phone,
-            label: 'Phone',
+            label: 'phone',
             value: profile.social.phone,
             href: `tel:${profile.social.phone.replace(/\s+/g, '')}`,
         },
         {
             icon: MapPin,
-            label: 'Location',
+            label: 'location',
             value: profile.location,
             href: null,
         },
@@ -82,10 +83,11 @@ const Contact = () => {
 
     if (showSuccess) {
         return (
-            <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8 bg-background text-center">
-                <div className="max-w-2xl mx-auto">
-                    <h2 className="text-3xl font-bold text-white mb-4">Message Sent</h2>
-                    <p className="text-slate-400">Thanks for reaching out! I'll get back to you soon.</p>
+            <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8 bg-canvas text-center">
+                <div className="max-w-2xl mx-auto font-mono">
+                    <p className="text-accent text-sm mb-2">$ send_message --status</p>
+                    <h2 className="text-2xl font-bold text-ink-primary mb-4">200 OK — message sent</h2>
+                    <p className="text-ink-muted text-sm">Thanks for reaching out. I&apos;ll get back to you soon.</p>
                 </div>
             </section>
         );
@@ -93,50 +95,51 @@ const Contact = () => {
 
     if (showError) {
         return (
-            <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8 bg-background text-center">
-                <div className="max-w-2xl mx-auto">
-                    <h2 className="text-3xl font-bold text-red-400 mb-4">Error Sending Message</h2>
-                    <p className="text-slate-400">Please check your details and try again.</p>
+            <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8 bg-canvas text-center">
+                <div className="max-w-2xl mx-auto font-mono">
+                    <p className="text-red-400 text-sm mb-2">$ send_message --status</p>
+                    <h2 className="text-2xl font-bold text-red-400 mb-4">422 Unprocessable — send failed</h2>
+                    <p className="text-ink-muted text-sm">Please check your details and try again.</p>
                 </div>
             </section>
         );
     }
 
     return (
-        <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8 bg-background">
+        <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8 bg-canvas">
             <div className="max-w-7xl mx-auto">
                 <SectionHeading
-                    eyebrow="Contact"
+                    eyebrow="contact"
                     title="Get In Touch"
                     description="I'm always open to discussing new opportunities, collaborations, or just having a chat about technology. Feel free to reach out!"
                 />
 
                 <div className="grid lg:grid-cols-2 gap-12">
                     <div>
-                        <h3 className="text-2xl font-bold text-white mb-6">Contact Information</h3>
+                        <h3 className="font-mono text-xs uppercase tracking-widest text-ink-muted mb-6">
+                            contact_information
+                        </h3>
 
-                        <div className="space-y-4 mb-8">
+                        <div className="space-y-3 mb-8">
                             {contactInfo.map((info) => {
                                 const Icon = info.icon;
                                 return (
                                     <div
                                         key={info.label}
-                                        className="flex items-start p-4 bg-surface rounded-lg border border-border hover:border-accent-cyan/30 transition-colors"
+                                        className="flex items-start gap-4 p-4 bg-surface border border-border hover:border-accent/40 transition-colors"
                                     >
-                                        <div className="w-12 h-12 bg-accent-gradient rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
-                                            <Icon className="w-6 h-6 text-white" />
-                                        </div>
+                                        <Icon className="w-4 h-4 text-accent mt-1 flex-shrink-0" />
                                         <div>
-                                            <p className="text-sm text-slate-500 font-medium mb-1">{info.label}</p>
+                                            <p className="text-xs text-ink-muted font-mono mb-1">{info.label}</p>
                                             {info.href ? (
                                                 <a
                                                     href={info.href}
-                                                    className="text-slate-200 font-semibold hover:text-accent-cyan transition-colors"
+                                                    className="text-ink-primary font-medium hover:text-accent transition-colors"
                                                 >
                                                     {info.value}
                                                 </a>
                                             ) : (
-                                                <p className="text-slate-200 font-semibold">{info.value}</p>
+                                                <p className="text-ink-primary font-medium">{info.value}</p>
                                             )}
                                         </div>
                                     </div>
@@ -144,7 +147,9 @@ const Contact = () => {
                             })}
                         </div>
 
-                        <h4 className="text-xl font-bold text-white mb-4">Connect With Me</h4>
+                        <h4 className="font-mono text-xs uppercase tracking-widest text-ink-muted mb-4">
+                            connect
+                        </h4>
                         <div className="space-y-3">
                             {socialLinks.map((social) => {
                                 const Icon = social.icon;
@@ -154,33 +159,37 @@ const Contact = () => {
                                         href={social.href}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="flex items-center p-4 bg-surface rounded-lg border border-border hover:border-accent-cyan/30 transition-colors group"
+                                        className="flex items-center gap-4 p-4 bg-surface border border-border hover:border-accent/40 transition-colors group"
                                     >
-                                        <Icon className="w-6 h-6 text-slate-400 mr-4 group-hover:text-accent-cyan transition-colors" />
+                                        <Icon className="w-4 h-4 text-ink-muted group-hover:text-accent transition-colors" />
                                         <div>
-                                            <p className="text-sm text-slate-500 font-medium">{social.label}</p>
-                                            <p className="text-slate-200 font-semibold">{social.username}</p>
+                                            <p className="text-xs text-ink-muted font-mono">{social.label}</p>
+                                            <p className="text-ink-primary font-medium">{social.username}</p>
                                         </div>
                                     </a>
                                 );
                             })}
                         </div>
 
-                        <div className="mt-8 p-6 bg-accent-gradient rounded-xl text-white">
-                            <h4 className="text-lg font-bold mb-2">Open to Opportunities</h4>
-                            <p className="text-white/90 text-sm">
+                        <CornerFrame className="mt-8 p-6 bg-surface">
+                            <h4 className="font-mono text-xs uppercase tracking-widest text-accent mb-2">
+                                open_to_opportunities
+                            </h4>
+                            <p className="text-ink-body text-sm leading-relaxed body-text">
                                 Currently seeking full-time positions, internships, and freelance opportunities in
                                 backend development, full-stack engineering, and software development roles.
                             </p>
-                        </div>
+                        </CornerFrame>
                     </div>
 
                     <div>
-                        <h3 className="text-2xl font-bold text-white mb-6">Send a Message</h3>
-                        <form onSubmit={handleSubmit} className="space-y-6">
+                        <h3 className="font-mono text-xs uppercase tracking-widest text-ink-muted mb-6">
+                            send_a_message
+                        </h3>
+                        <form onSubmit={handleSubmit} className="space-y-5">
                             <div>
-                                <label htmlFor="name" className="block text-sm font-medium text-slate-400 mb-2">
-                                    Your Name
+                                <label htmlFor="name" className="block font-mono text-xs text-ink-muted mb-2">
+                                    name
                                 </label>
                                 <input
                                     type="text"
@@ -189,14 +198,14 @@ const Contact = () => {
                                     value={formData.name}
                                     onChange={handleChange}
                                     required
-                                    className="w-full px-4 py-3 bg-surface border border-border rounded-lg text-slate-200 placeholder:text-slate-600 focus:ring-2 focus:ring-accent-cyan focus:border-transparent transition-all"
+                                    className="w-full px-4 py-3 bg-surface border border-border text-ink-primary placeholder:text-ink-faint focus:outline-none focus:border-accent transition-colors"
                                     placeholder="John Doe"
                                 />
                             </div>
 
                             <div>
-                                <label htmlFor="email" className="block text-sm font-medium text-slate-400 mb-2">
-                                    Your Email
+                                <label htmlFor="email" className="block font-mono text-xs text-ink-muted mb-2">
+                                    email
                                 </label>
                                 <input
                                     type="email"
@@ -205,15 +214,15 @@ const Contact = () => {
                                     value={formData.email}
                                     onChange={handleChange}
                                     required
-                                    className="w-full px-4 py-3 bg-surface border border-border rounded-lg text-slate-200 placeholder:text-slate-600 focus:ring-2 focus:ring-accent-cyan focus:border-transparent transition-all"
+                                    className="w-full px-4 py-3 bg-surface border border-border text-ink-primary placeholder:text-ink-faint focus:outline-none focus:border-accent transition-colors"
                                     placeholder="john@example.com"
                                 />
                                 <ValidationError prefix="Email" field="email" errors={state.errors} />
                             </div>
 
                             <div>
-                                <label htmlFor="subject" className="block text-sm font-medium text-slate-400 mb-2">
-                                    Subject
+                                <label htmlFor="subject" className="block font-mono text-xs text-ink-muted mb-2">
+                                    subject
                                 </label>
                                 <input
                                     type="text"
@@ -222,14 +231,14 @@ const Contact = () => {
                                     value={formData.subject}
                                     onChange={handleChange}
                                     required
-                                    className="w-full px-4 py-3 bg-surface border border-border rounded-lg text-slate-200 placeholder:text-slate-600 focus:ring-2 focus:ring-accent-cyan focus:border-transparent transition-all"
+                                    className="w-full px-4 py-3 bg-surface border border-border text-ink-primary placeholder:text-ink-faint focus:outline-none focus:border-accent transition-colors"
                                     placeholder="Job Opportunity"
                                 />
                             </div>
 
                             <div>
-                                <label htmlFor="message" className="block text-sm font-medium text-slate-400 mb-2">
-                                    Message
+                                <label htmlFor="message" className="block font-mono text-xs text-ink-muted mb-2">
+                                    message
                                 </label>
                                 <textarea
                                     id="message"
@@ -238,7 +247,7 @@ const Contact = () => {
                                     onChange={handleChange}
                                     required
                                     rows={6}
-                                    className="w-full px-4 py-3 bg-surface border border-border rounded-lg text-slate-200 placeholder:text-slate-600 focus:ring-2 focus:ring-accent-cyan focus:border-transparent transition-all resize-none"
+                                    className="w-full px-4 py-3 bg-surface border border-border text-ink-primary placeholder:text-ink-faint focus:outline-none focus:border-accent transition-colors resize-none"
                                     placeholder="Tell me about the opportunity or project..."
                                 />
                                 <ValidationError prefix="Message" field="message" errors={state.errors} />
@@ -247,10 +256,10 @@ const Contact = () => {
                             <button
                                 type="submit"
                                 disabled={state.submitting}
-                                className="w-full px-8 py-4 bg-accent-gradient text-white rounded-lg font-medium hover:brightness-110 transition-all shadow-lg disabled:opacity-60 flex items-center justify-center group"
+                                className="w-full px-8 py-4 bg-canvas border border-accent/60 text-accent font-mono text-sm hover:bg-accent hover:text-canvas transition-all duration-150 ease-out disabled:opacity-60 flex items-center justify-center group"
                             >
-                                {state.submitting ? 'Sending...' : 'Send Message'}
-                                <Send className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                {state.submitting ? 'sending...' : '$ send_message'}
+                                <Send className="ml-2 w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                             </button>
                         </form>
                     </div>
