@@ -1,12 +1,31 @@
-import type { ReactNode } from 'react';
+import type { ComponentType, ReactNode } from 'react';
 import { ExternalLink, Github } from 'lucide-react';
 import portfolio from '../data/portfolio.json';
 import type { PortfolioData, Project } from '../data/portfolio.types';
 import SectionHeading from './ui/SectionHeading';
 import TechBadge from './ui/TechBadge';
 import Reveal from './ui/Reveal';
+import { useGitHubStats } from '../hooks/useGitHubStats';
+import TaraDiagram from './diagrams/TaraDiagram';
+import UltraShortDiagram from './diagrams/UltraShortDiagram';
+import TestbenchDiagram from './diagrams/TestbenchDiagram';
+import XoClashDiagram from './diagrams/XoClashDiagram';
+import MedAssistDiagram from './diagrams/MedAssistDiagram';
+import JobTrackerDiagram from './diagrams/JobTrackerDiagram';
 
 const data = portfolio as PortfolioData;
+
+// Bespoke diagrams, keyed by project slug, built from that project's actual
+// execution/process data. A slug without an entry here falls back to the
+// auto-generated ASCII flow derived from its stack.
+const customDiagrams: Record<string, ComponentType> = {
+    tara: TaraDiagram,
+    ultrashort: UltraShortDiagram,
+    testbench: TestbenchDiagram,
+    'xo-clash': XoClashDiagram,
+    'medassist-ai': MedAssistDiagram,
+    'job-tracker': JobTrackerDiagram,
+};
 
 function buildDiagram(stack: string[]): string {
     const nodes = stack.slice(0, 4);
@@ -39,6 +58,7 @@ const DetailSection = ({ label, defaultOpen, children }: DetailSectionProps) => 
 const ProjectCard = ({ project, index }: { project: Project; index: number }) => {
     const diagram = buildDiagram(project.stack);
     const teaser = getTeaser(project);
+    const CustomDiagram = customDiagrams[project.slug];
 
     return (
         <div
@@ -48,15 +68,24 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                 }`}
         >
             <div className={`${project.pinned ? 'lg:flex lg:items-start' : ''}`}>
-                {diagram && (
+                {CustomDiagram ? (
                     <div
-                        className={`bg-canvas border-b border-border/60 px-5 py-6 flex items-center overflow-x-auto ${project.pinned ? 'lg:w-[42%] lg:border-b-0 lg:border-r lg:sticky lg:top-24' : ''
+                        className={`bg-canvas border-b border-border/60 px-5 py-6 flex items-center justify-center ${project.pinned ? 'lg:w-[42%] lg:border-b-0 lg:border-r lg:sticky lg:top-24' : ''
                             }`}
                     >
-                        <pre className="font-mono text-[0.7rem] sm:text-xs text-ink-muted whitespace-pre">
-                            <span className="text-accent">{diagram}</span>
-                        </pre>
+                        <CustomDiagram />
                     </div>
+                ) : (
+                    diagram && (
+                        <div
+                            className={`bg-canvas border-b border-border/60 px-5 py-6 flex items-center overflow-x-auto ${project.pinned ? 'lg:w-[42%] lg:border-b-0 lg:border-r lg:sticky lg:top-24' : ''
+                                }`}
+                        >
+                            <pre className="font-mono text-[0.7rem] sm:text-xs text-ink-muted whitespace-pre">
+                                <span className="text-accent">{diagram}</span>
+                            </pre>
+                        </div>
+                    )
                 )}
 
                 <div className={project.pinned ? 'lg:flex-1' : ''}>
@@ -177,6 +206,9 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
 
 const Projects = () => {
     const { projects, profile } = data;
+    const githubUsername = profile.social.github.replace(/\/$/, '').split('/').pop() ?? '';
+    const { stats: ghStats, isLive: ghIsLive } = useGitHubStats(githubUsername);
+    const repoCount = ghStats?.publicRepos ?? profile.githubProjectCount;
 
     if (projects.length === 0) return null;
 
@@ -211,7 +243,13 @@ const Projects = () => {
                         className="inline-flex items-center px-6 py-3.5 bg-canvas border border-border text-ink-body rounded-md font-mono text-sm hover:border-accent/60 hover:text-accent transition-colors"
                     >
                         <Github className="w-4 h-4 mr-2" />
-                        browse {profile.githubProjectCount}+ repositories on github
+                        browse {repoCount}+ repositories on github
+                        {ghIsLive && (
+                            <span
+                                className="ml-2 w-1.5 h-1.5 rounded-full bg-accent animate-status-pulse"
+                                title="Live from GitHub"
+                            />
+                        )}
                         <ExternalLink className="w-3.5 h-3.5 ml-2" />
                     </a>
                 </div>
