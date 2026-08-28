@@ -6,6 +6,7 @@
     "bio": "I'm a backend engineer who works primarily in Java and Spring Boot, with hands-on experience building event-driven systems using Apache Kafka, Redis, and PostgreSQL. Across three backend internships and several independent projects, I've designed database schemas, secured APIs, and shipped systems handling real production load.",
     "topSkills": ["Core Java", "Spring Boot", "Systems Design"],
     "githubProjectCount": 105,
+    "photoUrl": "/assets/henry-profile.jpg",
     "social": {
       "github": "https://github.com/HenryTech12",
       "linkedin": "https://linkedin.com/in/fakorode-henry",

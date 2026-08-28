@@ -17,6 +17,7 @@ export interface Profile {
   bio: string;
   topSkills: string[];
   githubProjectCount: number;
+  photoUrl: string;
   social: SocialLinks;
   languages: Language[];
   resumeUrl: string;
