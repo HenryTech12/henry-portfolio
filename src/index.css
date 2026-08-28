@@ -8,7 +8,12 @@
   }
 
   body {
-    @apply antialiased;
+    @apply antialiased bg-background text-slate-200 font-sans;
+  }
+
+  p {
+    word-break: normal;
+    overflow-wrap: normal;
   }
 }
 
@@ -16,5 +21,18 @@
   .bg-clip-text {
     -webkit-background-clip: text;
     background-clip: text;
+  }
+
+  .text-gradient-accent {
+    @apply bg-accent-gradient bg-clip-text text-transparent;
+  }
+
+  .text-gradient-chrome {
+    @apply bg-chrome-gradient bg-clip-text text-transparent;
+  }
+
+  .body-text {
+    word-break: normal;
+    overflow-wrap: normal;
   }
 }
