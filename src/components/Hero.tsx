@@ -1,9 +1,10 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { ArrowRight, Download, MapPin } from 'lucide-react';
 import portfolio from '../data/portfolio.json';
 import type { PortfolioData } from '../data/portfolio.types';
 import { getHandle } from '../lib/format';
 import { useTypewriter } from '../hooks/useTypewriter';
+import { useGitHubStats } from '../hooks/useGitHubStats';
 import CornerFrame from './ui/CornerFrame';
 import StatusDot from './ui/StatusDot';
 
@@ -12,36 +13,93 @@ const NetworkBackground = lazy(() => import('./NetworkBackground'));
 const data = portfolio as PortfolioData;
 
 type LineVariant = 'command' | 'json' | 'blank';
+type TerminalLine = { text: string; variant: LineVariant };
+
+interface TerminalBodyProps {
+    lines: TerminalLine[];
+}
+
+const TerminalBody = ({ lines }: TerminalBodyProps) => {
+    const { displayedLines, done } = useTypewriter(
+        lines.map((l) => l.text),
+        14,
+        200
+    );
+
+    return (
+        <>
+            {lines.map((line, i) => {
+                const text = displayedLines[i] ?? '';
+                const isLastLine = i === lines.length - 1;
+                return (
+                    <div key={i} className="whitespace-pre min-h-[1.4em]">
+                        {line.variant === 'command' ? (
+                            <span className="text-ink-primary">
+                                <span className="text-accent">{text.startsWith('$') ? '$ ' : ''}</span>
+                                {text.replace(/^\$ /, '')}
+                            </span>
+                        ) : (
+                            <span className="text-ink-body">{text}</span>
+                        )}
+                        {isLastLine && done && (
+                            <span className="inline-block w-2 h-3.5 bg-accent align-middle ml-1 animate-caret" />
+                        )}
+                    </div>
+                );
+            })}
+        </>
+    );
+};
+
+const GITHUB_FETCH_MAX_WAIT_MS = 1200;
 
 const Hero = () => {
     const { profile, experience, certifications, honors } = data;
     const headlineParts = profile.headline.split('|').map((part) => part.trim());
     const stackList = headlineParts[1] ? headlineParts[1].split(',').map((s) => s.trim()) : [];
     const handle = getHandle(profile.name);
+    const githubUsername = profile.social.github.replace(/\/$/, '').split('/').pop() ?? '';
 
-    const terminalLines: { text: string; variant: LineVariant }[] = [
+    const { stats: ghStats, isLive: ghIsLive, loading: ghLoading } = useGitHubStats(githubUsername);
+    const [readyToType, setReadyToType] = useState(!ghLoading);
+
+    useEffect(() => {
+        if (!ghLoading) {
+            setReadyToType(true);
+            return;
+        }
+        const timer = setTimeout(() => setReadyToType(true), GITHUB_FETCH_MAX_WAIT_MS);
+        return () => clearTimeout(timer);
+    }, [ghLoading]);
+
+    const liveRepoCount = ghStats?.publicRepos ?? profile.githubProjectCount;
+
+    const terminalLines: TerminalLine[] = [
         { text: `$ curl -s https://api.${handle}.dev/profile`, variant: 'command' },
         { text: '{', variant: 'json' },
         { text: `  "name": "${profile.name}",`, variant: 'json' },
         { text: `  "role": "${headlineParts[0] ?? ''}",`, variant: 'json' },
         { text: `  "stack": [${stackList.map((s) => `"${s}"`).join(', ')}],`, variant: 'json' },
         { text: `  "focus": "${headlineParts[2] ?? ''}",`, variant: 'json' },
-        { text: `  "hackathons": "${headlineParts[3] ?? ''}",`, variant: 'json' },
-        { text: '  "status": "available"', variant: 'json' },
+        { text: `  "status": "available"`, variant: 'json' },
+        { text: '}', variant: 'json' },
+        { text: '', variant: 'blank' },
+        { text: `$ curl -s https://api.github.com/users/${githubUsername}`, variant: 'command' },
+        { text: '{', variant: 'json' },
+        { text: `  "public_repos": ${liveRepoCount},`, variant: 'json' },
+        { text: `  "followers": ${ghStats?.followers ?? '…'},`, variant: 'json' },
+        {
+            text: `  "member_since": "${ghStats ? new Date(ghStats.createdAt).getFullYear() : '…'}"`,
+            variant: 'json',
+        },
         { text: '}', variant: 'json' },
     ];
 
-    const { displayedLines, done } = useTypewriter(
-        terminalLines.map((l) => l.text),
-        14,
-        400
-    );
-
     const stats = [
-        { value: experience.length, suffix: '', label: 'Internships' },
-        { value: profile.githubProjectCount, suffix: '+', label: 'GitHub Projects' },
-        { value: certifications.length, suffix: '', label: 'Certifications' },
-        { value: honors.length, suffix: '', label: 'Hackathon Wins' },
+        { value: experience.length, suffix: '', label: 'Internships', live: false },
+        { value: liveRepoCount, suffix: '+', label: 'GitHub Projects', live: ghIsLive },
+        { value: certifications.length, suffix: '', label: 'Certifications', live: false },
+        { value: honors.length, suffix: '', label: 'Hackathon Wins', live: false },
     ];
 
     return (
@@ -73,26 +131,12 @@ const Hero = () => {
                         </span>
                     </div>
 
-                    <div className="px-5 sm:px-8 py-6 sm:py-8 font-mono text-xs sm:text-sm leading-relaxed text-left overflow-x-auto">
-                        {terminalLines.map((line, i) => {
-                            const text = displayedLines[i] ?? '';
-                            const isLastLine = i === terminalLines.length - 1;
-                            return (
-                                <div key={i} className="whitespace-pre min-h-[1.4em]">
-                                    {line.variant === 'command' ? (
-                                        <span className="text-ink-primary">
-                                            <span className="text-accent">{text.startsWith('$') ? '$ ' : ''}</span>
-                                            {text.replace(/^\$ /, '')}
-                                        </span>
-                                    ) : (
-                                        <span className="text-ink-body">{text}</span>
-                                    )}
-                                    {isLastLine && done && (
-                                        <span className="inline-block w-2 h-3.5 bg-accent align-middle ml-1 animate-caret" />
-                                    )}
-                                </div>
-                            );
-                        })}
+                    <div className="px-5 sm:px-8 py-6 sm:py-8 font-mono text-xs sm:text-sm leading-relaxed text-left overflow-x-auto min-h-[280px] sm:min-h-[320px]">
+                        {readyToType ? (
+                            <TerminalBody lines={terminalLines} />
+                        ) : (
+                            <span className="inline-block w-2 h-3.5 bg-accent align-middle animate-caret" />
+                        )}
                     </div>
                 </div>
 
@@ -135,7 +179,13 @@ const Hero = () => {
                                 {stat.value}
                                 {stat.suffix}
                             </div>
-                            <div className="mt-2 text-ink-muted text-[0.65rem] sm:text-xs font-mono uppercase tracking-widest">
+                            <div className="mt-2 flex items-center justify-center gap-1.5 text-ink-muted text-[0.65rem] sm:text-xs font-mono uppercase tracking-widest">
+                                {stat.live && (
+                                    <span
+                                        className="w-1.5 h-1.5 rounded-full bg-accent animate-status-pulse"
+                                        title="Live from GitHub"
+                                    />
+                                )}
                                 {stat.label}
                             </div>
                         </CornerFrame>

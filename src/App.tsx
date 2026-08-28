@@ -9,6 +9,7 @@ import Education from './components/Education';
 import Awards from './components/Awards';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import CommandPalette from './components/CommandPalette';
 import portfolio from './data/portfolio.json';
 import type { PortfolioData } from './data/portfolio.types';
 
@@ -16,6 +17,7 @@ const data = portfolio as PortfolioData;
 
 function App() {
   const [activeSection, setActiveSection] = useState('home');
+  const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,7 +46,12 @@ function App() {
 
   return (
     <div className="min-h-screen bg-canvas">
-      <Header activeSection={activeSection} setActiveSection={setActiveSection} />
+      <Header
+        activeSection={activeSection}
+        setActiveSection={setActiveSection}
+        onOpenCommandPalette={() => setCommandPaletteOpen(true)}
+      />
+      <CommandPalette open={commandPaletteOpen} onOpenChange={setCommandPaletteOpen} />
       <main>
         <Hero />
         <About />

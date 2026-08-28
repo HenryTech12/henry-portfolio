@@ -1,29 +1,20 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Github, Linkedin, Mail } from 'lucide-react';
+import { Menu, X, Github, Linkedin, Mail, Command } from 'lucide-react';
 import portfolio from '../data/portfolio.json';
 import type { PortfolioData } from '../data/portfolio.types';
 import { getHandle } from '../lib/format';
+import { navItems } from '../lib/nav';
 
 const data = portfolio as PortfolioData;
 
 interface HeaderProps {
     activeSection: string;
     setActiveSection: (section: string) => void;
+    onOpenCommandPalette: () => void;
 }
 
-const navItems = [
-    { id: 'home', label: 'home' },
-    { id: 'about', label: 'about' },
-    { id: 'experience', label: 'experience' },
-    { id: 'projects', label: 'projects' },
-    { id: 'skills', label: 'skills' },
-    { id: 'education', label: 'education' },
-    { id: 'awards', label: 'awards' },
-    { id: 'contact', label: 'contact' },
-];
-
-const Header = ({ activeSection, setActiveSection }: HeaderProps) => {
+const Header = ({ activeSection, setActiveSection, onOpenCommandPalette }: HeaderProps) => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -87,6 +78,14 @@ const Header = ({ activeSection, setActiveSection }: HeaderProps) => {
 
                     {/* Desktop Icons */}
                     <div className="hidden md:flex items-center space-x-4">
+                        <button
+                            onClick={onOpenCommandPalette}
+                            className="flex items-center gap-1.5 px-2.5 py-1 border border-border rounded-md font-mono text-xs text-ink-muted hover:border-accent/50 hover:text-accent transition-colors"
+                            aria-label="Open command palette"
+                        >
+                            <Command className="w-3.5 h-3.5" />
+                            K
+                        </button>
                         <a
                             href={data.profile.social.github}
                             target="_blank"
@@ -111,17 +110,26 @@ const Header = ({ activeSection, setActiveSection }: HeaderProps) => {
                         </a>
                     </div>
 
-                    {/* Mobile Menu Button */}
-                    <button
-                        className="md:hidden text-ink-body transition-transform duration-300"
-                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                    >
-                        {isMobileMenuOpen ? (
-                            <X className="w-6 h-6 rotate-90 transition-transform duration-300" />
-                        ) : (
-                            <Menu className="w-6 h-6 rotate-0 transition-transform duration-300" />
-                        )}
-                    </button>
+                    {/* Mobile: command palette + menu */}
+                    <div className="flex items-center gap-3 md:hidden">
+                        <button
+                            onClick={onOpenCommandPalette}
+                            className="text-ink-muted hover:text-accent transition-colors"
+                            aria-label="Open command palette"
+                        >
+                            <Command className="w-5 h-5" />
+                        </button>
+                        <button
+                            className="text-ink-body transition-transform duration-300"
+                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        >
+                            {isMobileMenuOpen ? (
+                                <X className="w-6 h-6 rotate-90 transition-transform duration-300" />
+                            ) : (
+                                <Menu className="w-6 h-6 rotate-0 transition-transform duration-300" />
+                            )}
+                        </button>
+                    </div>
                 </div>
             </div>
 
