@@ -1,0 +1,216 @@
+{
+  "profile": {
+    "name": "Fakorode Odunayo Henry",
+    "location": "Lagos, Nigeria",
+    "headline": "Backend Engineer | Java, Spring Boot, Apache Kafka | Building Scalable, Event-Driven Systems | 7× Hackathon Winner/Runner-Up",
+    "bio": "I'm a backend engineer who works primarily in Java and Spring Boot, with hands-on experience building event-driven systems using Apache Kafka, Redis, and PostgreSQL. Across three backend internships and several independent projects, I've designed database schemas, secured APIs, and shipped systems handling real production load.",
+    "topSkills": ["Core Java", "Spring Boot", "Systems Design"],
+    "githubProjectCount": 105,
+    "social": {
+      "github": "https://github.com/HenryTech12",
+      "linkedin": "https://linkedin.com/in/fakorode-henry",
+      "email": "fakorodehenry@gmail.com",
+      "phone": "+234 810 059 7712"
+    },
+    "languages": [
+      { "name": "English", "level": "Native / Bilingual" },
+      { "name": "Japanese", "level": "Elementary" }
+    ],
+    "resumeUrl": "/assets/resume.pdf"
+  },
+  "experience": [
+    {
+      "role": "Java Developer Intern",
+      "company": "Badkul Technology Pvt. Ltd.",
+      "location": "Remote",
+      "period": "Sep 2025 - Nov 2025",
+      "achievements": [
+        "Built 10+ secured RESTful APIs for an Ambulance Dispatch Management System, independently designing the database schema.",
+        "Secured endpoints with role-based access control via Spring Security and JWT.",
+        "Cut average API response times by 25% via query optimization, indexing, and Hibernate lazy-loading tuning."
+      ]
+    },
+    {
+      "role": "Java Developer Intern / Java Software Engineer",
+      "company": "FlexiSAF Edusoft Limited",
+      "location": "Lagos, Nigeria · Remote",
+      "period": "May 2025 - Aug 2025",
+      "achievements": [
+        "Engineered a high-performance Trip Management System handling 10,000+ records.",
+        "Reduced average API response time by 97% (~300ms → ~8ms) with Redis caching (cache-aside invalidation).",
+        "Strengthened reliability via global exception handling, Swagger/OpenAPI docs, and JUnit/Mockito test coverage."
+      ]
+    },
+    {
+      "role": "Java Developer Intern",
+      "company": "CodSoft",
+      "location": "Remote",
+      "period": "Mar 2025 · 1 month",
+      "achievements": [
+        "Built a Currency Converter application integrating real-time exchange-rate APIs using Java."
+      ]
+    }
+  ],
+  "certifications": [
+    { "title": "Software Engineer", "issuer": "HackerRank", "issued": "Jul 2024" },
+    { "title": "Java Basic Certificate", "issuer": "HackerRank", "issued": "Jul 2024" },
+    { "title": "SQL Intermediate", "issuer": "HackerRank", "issued": "May 2024" },
+    { "title": "Java Problem Solving Certificate", "issuer": "Log2Base2", "issued": "Mar 2021", "expires": "May 2026" },
+    { "title": "Java Backend Completion Certificate", "issuer": "FlexiSAF Edusoft" },
+    { "title": "Python Developer Training Certificate", "issuer": "NITHUB UNILAG" }
+  ],
+  "honors": [
+    {
+      "title": "2nd Runner-Up (Overall)",
+      "organization": "TiT 6.0 Hackathon (QoreID-sponsored)",
+      "date": "Aug 2026"
+    },
+    {
+      "title": "Winner, Digital Identity & Trust Track",
+      "organization": "TiT 6.0 Hackathon (QoreID-sponsored)",
+      "date": "Aug 2026"
+    },
+    {
+      "title": "1st Runner-Up",
+      "organization": "DSN x Bluechip Technologies (BCT) Hackathon",
+      "date": "Jun 2026",
+      "description": "Placed 1st Runner-Up among 595 teams / 1,220+ participants, leading 3-person Team Orbit."
+    },
+    { "title": "1st Runner-Up", "organization": "UNILAG Engineering Hackathon" },
+    { "title": "1st Runner-Up", "organization": "Curacel University Hackathon" },
+    { "title": "1st Runner-Up", "organization": "Fail Forward Hackathon" },
+    { "title": "Winner", "organization": "AI Campus Network Hackathon" }
+  ],
+  "projects": [
+    {
+      "slug": "tara",
+      "title": "TARA — Identity Fraud Ring Detection Platform",
+      "subtitle": "TiT 6.0 Hackathon (Thrive-In-Tech), QoreID Track — full-stack build",
+      "pinned": true,
+      "stack": [
+        "Python", "FastAPI", "SQLAlchemy", "PostgreSQL (Aiven)", "Docker",
+        "JavaScript/JSX", "QoreID API (OAuth-style client-credentials)"
+      ],
+      "problem": "Individual identity verification (QoreID) confirms a person is real, but passes coordinated fraud rings acting through multiple independently-verified identities — no single verification check catches a network of colluding accounts.",
+      "process": "Adapted an existing repo (VERA/GRACE, a financial transaction fraud detection backend) under explicit event permission, reusing the graph architecture but replacing the domain logic entirely — from transaction patterns to shared identity attributes (device, address, employer, signup timing).",
+      "execution": [
+        "Built a 4-endpoint REST API (POST /identities/verify, GET /verdict/{id}, GET /graph, GET /health) with real QoreID integration — live BVN/NIN verification, token exchange with in-process caching (~55min TTL), and automatic graceful fallback to a deterministic stub on failure, transparently marked in every response so a demo never silently fakes a result.",
+        "Built three custom fraud-detection patterns: shared-attribute clustering (device/address/employer), identity fragmentation (fuzzy name-matching via RapidFuzz with a shared-context guard), and coordinated onboarding velocity (time-windowed device/referral clustering).",
+        "Built an explainable, additive trust-scoring engine — no black-box ML; every point on the score traces to a human-readable evidence string — hard-coded so the system can never auto-reject; max severity is \"Review.\"",
+        "Built dual-layer persistence: an in-memory graph for detection-speed reads plus Postgres (SQLAlchemy, hosted on Aiven) for durable storage, with BVN-based idempotency to prevent duplicate identities on resubmission.",
+        "Wrote 10 automated tests covering every detection pattern and edge case — including a dedicated regression test asserting the system never hard-rejects.",
+        "Shipped a self-contained Docker image (supports local Postgres via docker-compose or a hosted Postgres target) deployed live on Render, with startup-time config self-healing (auto-corrects Postgres URL scheme mismatches and malformed QoreID base URLs instead of crash-looping)."
+      ],
+      "results": [
+        "2nd Runner-Up overall, Winner — Digital Identity & Trust Track, TiT 6.0 Hackathon."
+      ],
+      "reflection": "Identity-fragmentation detection is O(n²) at current scale — fine for a pilot, with a specific fix path: attribute-bucketing to narrow comparison scope before applying fuzzy matching.",
+      "scale": [
+        "25 backend commits · 43 active Python files · ~2,950 active LOC (8 legacy files isolated to _unused/, not deleted)",
+        "10 frontend commits · 44 active JS/JSX files · ~2,820 active LOC (65 legacy files isolated)"
+      ]
+    },
+    {
+      "slug": "ultrashort",
+      "title": "UltraShort — Enterprise-Grade URL Shortening Service",
+      "stack": ["Java 17", "Spring Boot 3", "PostgreSQL", "Redis", "Resilience4j", "Docker", "Maven"],
+      "problem": null,
+      "execution": [
+        "Built a distributed, high-concurrency backend with a Redis cache-aside layer in front of PostgreSQL.",
+        "Implemented Resilience4j circuit breakers and rate limiting, following Clean Architecture.",
+        "Shipped across 15+ merged PRs with 80+ tests."
+      ],
+      "results": [
+        "100ms average API response time while sustaining 3,000+ requests in load testing.",
+        "Deployed to production (Render backend, Vercel frontend)."
+      ]
+    },
+    {
+      "slug": "testbench",
+      "title": "Testbench — AI-Powered Exam-Prep Platform",
+      "subtitle": "SEES Tech Hub",
+      "stack": ["Python", "FastAPI", "PostgreSQL", "SQLAlchemy", "Alembic", "Cloudflare R2", "Heroku"],
+      "problem": null,
+      "execution": [
+        "Sole backend engineer; built and shipped the public-facing FastAPI backend within a 5-day sprint window.",
+        "Owned the shared Postgres schema, auth, uploads, and question-review APIs consumed by both the Next.js frontend and a separate pipeline service."
+      ],
+      "results": [
+        "Cut per-PDF upload-to-question processing time from 5 minutes to 3 minutes (40% reduction) through pipeline integration fixes and presigned-upload contract corrections.",
+        "Shipped a full set-sharing/discovery feature across 13+ merged PRs and 49 automated tests."
+      ]
+    },
+    {
+      "slug": "xo-clash",
+      "title": "XO-Clash — Real-Time Multiplayer Game Backend",
+      "stack": ["Java", "Spring Boot 3", "WebSockets/STOMP", "RabbitMQ", "Redis", "JWT"],
+      "problem": null,
+      "execution": [
+        "Built a real-time multiplayer Tic-Tac-Toe backend using WebSockets (STOMP) with Redis-backed global game state.",
+        "Implemented RabbitMQ-driven cross-player notifications.",
+        "Secured the system via JWT."
+      ],
+      "results": [
+        "Achieved sub-second move synchronization for 20+ concurrent users."
+      ]
+    },
+    {
+      "slug": "medassist-ai",
+      "title": "MedAssist AI",
+      "subtitle": "Team project",
+      "stack": ["Spring Boot", "Java"],
+      "problem": null,
+      "execution": [
+        "AI assistant automating appointments, patient communication, and feedback for clinics.",
+        "Built with other contributors — Henry's specific role/contribution to be confirmed before publishing."
+      ],
+      "results": []
+    }
+  ],
+  "skills": [
+    {
+      "category": "Languages",
+      "items": ["Java", "Python", "JavaScript"]
+    },
+    {
+      "category": "Backend & Frameworks",
+      "items": ["Spring Boot 3", "Spring Security", "Hibernate / JPA", "FastAPI", "RESTful APIs", "WebSockets / STOMP"]
+    },
+    {
+      "category": "Data & Messaging",
+      "items": ["PostgreSQL", "Redis", "Apache Kafka", "RabbitMQ", "SQLAlchemy", "Alembic"]
+    },
+    {
+      "category": "Reliability & Testing",
+      "items": ["Resilience4j", "JUnit", "Mockito", "Swagger / OpenAPI", "Global Exception Handling"]
+    },
+    {
+      "category": "DevOps & Cloud",
+      "items": ["Docker", "Render", "Vercel", "Heroku", "Cloudflare R2", "CI/CD", "Git / GitHub"]
+    },
+    {
+      "category": "Security",
+      "items": ["JWT Authentication", "Role-Based Access Control", "OAuth-style Client-Credentials Flows"]
+    }
+  ],
+  "coreCompetencies": [
+    "Systems Design", "Problem-Solving", "Debugging", "Performance Optimization",
+    "Documentation", "Team Collaboration", "Clean Code", "Query Optimization"
+  ],
+  "education": [
+    {
+      "degree": "B.Eng. Electrical and Electronics Engineering",
+      "institution": "University of Lagos",
+      "location": "Lagos, Nigeria",
+      "period": "Nov 2024 - Present",
+      "status": "In Progress"
+    },
+    {
+      "degree": "Secondary School Certificate",
+      "institution": "Grano Model College",
+      "location": "Abeokuta, Ogun, Nigeria",
+      "period": "Jan 2020 - May 2022",
+      "status": "Completed"
+    }
+  ]
+}

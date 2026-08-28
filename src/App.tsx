@@ -9,6 +9,10 @@ import Education from './components/Education';
 import Awards from './components/Awards';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import portfolio from './data/portfolio.json';
+import type { PortfolioData } from './data/portfolio.types';
+
+const data = portfolio as PortfolioData;
 
 function App() {
   const [activeSection, setActiveSection] = useState('home');
@@ -35,11 +39,11 @@ function App() {
   }, []);
 
   useEffect(() => {
-    document.title = 'Fakorode Odunayo Henry - Full Stack Java Developer';
+    document.title = `${data.profile.name} | ${data.profile.headline.split('|')[0].trim()}`;
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
+    <div className="min-h-screen bg-canvas">
       <Header activeSection={activeSection} setActiveSection={setActiveSection} />
       <main>
         <Hero />

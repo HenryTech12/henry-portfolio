@@ -1,108 +1,70 @@
-import { Trophy, Medal, Calendar } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
+import portfolio from '../data/portfolio.json';
+import type { PortfolioData } from '../data/portfolio.types';
+import SectionHeading from './ui/SectionHeading';
+import CornerFrame from './ui/CornerFrame';
+
+const data = portfolio as PortfolioData;
 
 const Awards = () => {
-    const awards = [
-        {
-            title: 'Hackathon Winner – Top Project for Verifact',
-            organization: 'AI Campus Network, University of Lagos',
-            date: 'Nov 2025',
-            description:
-                'Awarded Top Project for Verifact, a fact-checking based web application, at the AI Campus Network Demo Hackathon.',
-            icon: Trophy,
-            color: 'from-yellow-500 to-orange-500',
-            path: 'https://mediacareerng.org/fact-checking-app-tops-ai-campus-network-demo/'
-        },
-        {
-            title: '1st Runner-up, Debate & Quiz Competition',
-            organization: 'University of Lagos (EE & Computer Engineering Students)',
-            date: 'Jan 2025',
-            description:
-                'Achieved 1st Runner-up among 1st - 3rd year Electrical/Electronics & Computer Engineering Students as a first-year student in a University of Lagos engineering competition.',
-            icon: Medal,
-            color: 'from-blue-500 to-cyan-500',
-        },
-    ];
+    const { honors } = data;
+
+    if (honors.length === 0) return null;
 
     return (
-        <section id="awards" className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-50">
+        <section id="awards" className="py-20 px-4 sm:px-6 lg:px-8 bg-surface">
             <div className="max-w-7xl mx-auto">
-                <div className="text-center mb-16">
-                    <h2 className="text-4xl font-bold text-gray-900 mb-4">Awards & Recognition</h2>
-                    <div className="w-20 h-1 bg-gradient-to-r from-blue-600 to-cyan-600 mx-auto mb-4"></div>
-                    <p className="text-gray-600 max-w-2xl mx-auto">
-                        Recognition for technical excellence and competitive achievement
-                    </p>
-                </div>
+                <SectionHeading
+                    eyebrow="recognition"
+                    title="Honors & Awards"
+                    description="Recognition for technical excellence and competitive achievement across hackathons and academic competitions."
+                />
 
-                <div className="grid md:grid-cols-2 gap-8">
-                    {awards.map((award, index) => {
-                        const Icon = award.icon;
+                <div className="grid md:grid-cols-2 gap-4">
+                    {honors.map((award, index) => {
+                        const tag = award.title.toLowerCase().includes('winner') ? 'winner' : 'runner-up';
                         return (
-                            <div
-                                key={index}
-                                className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all overflow-hidden group hover:-translate-y-1"
-                            >
-                                <div className={`h-2 bg-gradient-to-r ${award.color}`}></div>
-                                <div className="p-8">
-                                    <div>
-                                        <div
-                                            className={`w-16 h-16 bg-gradient-to-r ${award.color} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}
+                            <CornerFrame key={index} className="bg-canvas p-6">
+                                <div className="flex items-start justify-between mb-4">
+                                    <span
+                                        className={`px-2.5 py-1 text-[0.65rem] font-mono uppercase tracking-widest border ${tag === 'winner'
+                                                ? 'border-accent/50 text-accent'
+                                                : 'border-ink-faint/50 text-ink-muted'
+                                            }`}
+                                    >
+                                        {tag}
+                                    </span>
+                                    {award.url && (
+                                        <a
+                                            href={award.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="flex items-center gap-1 text-xs font-mono text-ink-muted hover:text-accent transition-colors"
                                         >
-                                            <Icon className="w-8 h-8 text-white" />
-                                        </div>
-                                        {
-                                            index == 0 && award.path && (
-                                                <a
-                                                    href={award.path}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="text-blue-500 hover:underline"
-                                                >
-                                                    View Post
-                                                </a>
-                                            )
-                                        }
-                                    </div>
-
-                                    <h3 className="text-2xl font-bold text-gray-900 mb-3">{award.title}</h3>
-
-                                    <div className="flex items-center text-gray-600 mb-4">
-                                        <Calendar className="w-4 h-4 mr-2" />
-                                        <span className="text-sm font-medium">{award.date}</span>
-                                    </div>
-
-                                    <p className="text-blue-600 font-medium mb-4">{award.organization}</p>
-
-                                    <p className="text-gray-600 leading-relaxed">{award.description}</p>
+                                            view post
+                                            <ExternalLink className="w-3 h-3" />
+                                        </a>
+                                    )}
                                 </div>
-                            </div>
+
+                                <h3 className="text-base font-bold text-ink-primary mb-2">{award.title}</h3>
+
+                                {award.date && (
+                                    <div className="font-mono text-xs text-ink-faint mb-2">{award.date}</div>
+                                )}
+
+                                {award.organization && (
+                                    <p className="text-accent font-mono text-xs mb-3">{award.organization}</p>
+                                )}
+
+                                {award.description && (
+                                    <p className="text-ink-body text-sm leading-relaxed body-text">
+                                        {award.description}
+                                    </p>
+                                )}
+                            </CornerFrame>
                         );
                     })}
-                </div>
-
-                <div className="mt-12 text-center">
-                    <div className="bg-gradient-to-r from-blue-600 to-cyan-600 rounded-2xl p-8 text-white">
-                        <h3 className="text-2xl font-bold mb-4">Performance Recognition</h3>
-                        <p className="text-blue-100 mb-6 max-w-2xl mx-auto">
-                            Consistently recognized for technical excellence, achieving an A+ performance grade at
-                            Badkul Technology and earning top honors in competitive academic and professional
-                            environments.
-                        </p>
-                        <div className="flex justify-center gap-8 flex-wrap">
-                            <div>
-                                <p className="text-3xl font-bold mb-1">A+</p>
-                                <p className="text-blue-100 text-sm">Performance Grade</p>
-                            </div>
-                            <div>
-                                <p className="text-3xl font-bold mb-1">2</p>
-                                <p className="text-blue-100 text-sm">Major Awards</p>
-                            </div>
-                            <div>
-                                <p className="text-3xl font-bold mb-1">Top</p>
-                                <p className="text-blue-100 text-sm">Project Winner</p>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </section>

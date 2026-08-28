@@ -1,101 +1,53 @@
-import { Code2, Database, Lock, Zap } from 'lucide-react';
+import { Languages as LanguagesIcon } from 'lucide-react';
+import portfolio from '../data/portfolio.json';
+import type { PortfolioData } from '../data/portfolio.types';
+import SectionHeading from './ui/SectionHeading';
+import TechBadge from './ui/TechBadge';
+
+const data = portfolio as PortfolioData;
 
 const About = () => {
-    const highlights = [
-        {
-            icon: Code2,
-            title: 'Backend Architecture',
-            description: 'Expert in Spring Boot, microservices, and RESTful API design',
-        },
-        {
-            icon: Database,
-            title: 'Database Management',
-            description: 'Proficient in PostgreSQL, MySQL with optimization expertise',
-        },
-        {
-            icon: Lock,
-            title: 'Security First',
-            description: 'Implementing robust authentication and role-based access control',
-        },
-        {
-            icon: Zap,
-            title: 'Performance',
-            description: 'Focused on optimization, caching, and efficient resource management',
-        },
-    ];
+    const { profile } = data;
 
     return (
-        <section id="about" className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+        <section id="about" className="py-20 px-4 sm:px-6 lg:px-8 bg-canvas">
             <div className="max-w-7xl mx-auto">
-                <div className="text-center mb-16">
-                    <h2 className="text-4xl font-bold text-gray-900 mb-4">About Me</h2>
-                    <div className="w-20 h-1 bg-gradient-to-r from-blue-600 to-cyan-600 mx-auto"></div>
-                </div>
+                <SectionHeading eyebrow="about" title="About Me" />
 
-                <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
-                    <div>
-                        <h3 className="text-2xl font-bold text-gray-900 mb-6">
-                            Results-Driven Java Developer
+                <div className="grid lg:grid-cols-5 gap-12 items-start">
+                    <div className="lg:col-span-3">
+                        <h3 className="text-xl font-bold text-ink-primary mb-6">
+                            Backend-focused, systems-minded
                         </h3>
-                        <div className="space-y-4 text-gray-600 leading-relaxed">
-                            <p>
-                                I'm a passionate Full Stack Java Developer with hands-on experience in building
-                                scalable and secure web applications. My expertise spans across Spring Boot, Spring
-                                Cloud, Hibernate, and modern database technologies like PostgreSQL and MySQL.
-                            </p>
-                            <p>
-                                I specialize in developing RESTful APIs, microservices architectures, and backend
-                                systems with a strong emphasis on security, performance optimization, and clean code
-                                practices. My approach combines technical excellence with practical problem-solving
-                                to deliver maintainable, high-performance solutions.
-                            </p>
-                            <p>
-                                Recently, I've successfully delivered an Ambulance Dispatch Management System
-                                featuring ETA-based allocation, automated notifications, and comprehensive admin
-                                controls, demonstrating my ability to build real-world production systems.
-                            </p>
-                            <p>
-                                Currently pursuing my Bachelor's in Electrical/Electronic Engineering at the
-                                University of Lagos while continuously deepening my expertise in system design,
-                                networking, and optimization strategies.
-                            </p>
-                        </div>
-                    </div>
+                        <p className="text-ink-body leading-relaxed body-text">{profile.bio}</p>
 
-                    <div className="grid sm:grid-cols-2 gap-6">
-                        {highlights.map((item, index) => {
-                            const Icon = item.icon;
-                            return (
-                                <div
-                                    key={index}
-                                    className="p-6 bg-gradient-to-br from-slate-50 to-blue-50 rounded-xl hover:shadow-lg transition-shadow"
-                                >
-                                    <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-lg flex items-center justify-center mb-4">
-                                        <Icon className="w-6 h-6 text-white" />
-                                    </div>
-                                    <h4 className="text-lg font-semibold text-gray-900 mb-2">{item.title}</h4>
-                                    <p className="text-sm text-gray-600">{item.description}</p>
+                        {profile.languages.length > 0 && (
+                            <div className="mt-8 flex items-start gap-3">
+                                <LanguagesIcon className="w-4 h-4 text-accent flex-shrink-0 mt-1" />
+                                <div className="flex flex-wrap gap-x-6 gap-y-2 font-mono text-sm">
+                                    {profile.languages.map((lang) => (
+                                        <div key={lang.name}>
+                                            <span className="text-ink-primary">{lang.name}</span>
+                                            <span className="text-ink-muted ml-2">// {lang.level}</span>
+                                        </div>
+                                    ))}
                                 </div>
-                            );
-                        })}
+                            </div>
+                        )}
                     </div>
-                </div>
 
-                <div className="bg-gradient-to-r from-blue-600 to-cyan-600 rounded-2xl p-8 text-white">
-                    <div className="grid md:grid-cols-3 gap-8 text-center">
-                        <div>
-                            <h4 className="text-3xl font-bold mb-2">25%</h4>
-                            <p className="text-blue-100">Response Time Reduction</p>
+                    {profile.topSkills.length > 0 && (
+                        <div className="lg:col-span-2">
+                            <p className="font-mono text-xs uppercase tracking-widest text-ink-muted mb-4">
+                                core_skills
+                            </p>
+                            <div className="flex flex-wrap gap-2">
+                                {profile.topSkills.map((skill) => (
+                                    <TechBadge key={skill}>{skill}</TechBadge>
+                                ))}
+                            </div>
                         </div>
-                        <div>
-                            <h4 className="text-3xl font-bold mb-2">40%</h4>
-                            <p className="text-blue-100">Deployment Speed Improvement</p>
-                        </div>
-                        <div>
-                            <h4 className="text-3xl font-bold mb-2">35%</h4>
-                            <p className="text-blue-100">Fake Email Reduction</p>
-                        </div>
-                    </div>
+                    )}
                 </div>
             </div>
         </section>
