@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react';
 import { ArrowRight, Download, MapPin } from 'lucide-react';
 import portfolio from '../data/portfolio.json';
 import type { PortfolioData } from '../data/portfolio.types';
@@ -5,6 +6,8 @@ import { getHandle } from '../lib/format';
 import { useTypewriter } from '../hooks/useTypewriter';
 import CornerFrame from './ui/CornerFrame';
 import StatusDot from './ui/StatusDot';
+
+const NetworkBackground = lazy(() => import('./NetworkBackground'));
 
 const data = portfolio as PortfolioData;
 
@@ -47,6 +50,11 @@ const Hero = () => {
             className="relative min-h-screen flex items-center justify-center pt-28 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden"
         >
             <div className="absolute inset-0 bg-dot-grid [mask-image:radial-gradient(ellipse_60%_60%_at_50%_35%,black,transparent)]" />
+            <div className="absolute inset-0 [mask-image:radial-gradient(ellipse_65%_65%_at_50%_38%,black,transparent)]">
+                <Suspense fallback={null}>
+                    <NetworkBackground />
+                </Suspense>
+            </div>
             <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-accent/10 blur-[120px] pointer-events-none" />
 
             <div className="relative max-w-4xl mx-auto w-full">

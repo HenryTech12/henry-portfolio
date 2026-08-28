@@ -166,6 +166,24 @@
         "Built with other contributors — Henry's specific role/contribution to be confirmed before publishing."
       ],
       "results": []
+    },
+    {
+      "slug": "job-tracker",
+      "title": "Job Tracker — Microservices Application",
+      "subtitle": "Spring Boot microservices — User, Job, and Notification services",
+      "repoUrl": "https://github.com/HenryTech12/JobTrackerApplication",
+      "stack": [
+        "Java 17", "Spring Boot 3", "Spring Cloud OpenFeign", "Spring Data JPA / Hibernate",
+        "Apache Kafka", "MySQL", "Eureka Discovery Server", "Spring Cloud Gateway"
+      ],
+      "problem": null,
+      "execution": [
+        "Built a 3-service microservices architecture: User Service (registration, authentication, profile data), Job Service (job applications, interview scheduling, interviewer status updates), and Notification Service (Kafka event listener sending real-time notifications).",
+        "Implemented JWT authentication in the User Service, with tokens issued at login and validated across services via Feign.",
+        "Used Feign Clients for synchronous REST communication between Job Service and User Service, and Kafka for asynchronous, event-driven interviewer-status updates from Job Service to Notification Service.",
+        "Registered all services with Eureka Discovery Server and routed external requests through Spring Cloud Gateway."
+      ],
+      "results": []
     }
   ],
   "skills": [
