@@ -158,12 +158,13 @@
     {
       "slug": "medassist-ai",
       "title": "MedAssist AI",
-      "subtitle": "Team project",
-      "stack": ["Spring Boot", "Java"],
+      "subtitle": "Team project — Backend Developer",
+      "stack": ["Spring Boot", "Java", "Twilio (WhatsApp API)"],
       "problem": null,
       "execution": [
         "AI assistant automating appointments, patient communication, and feedback for clinics.",
-        "Built with other contributors — Henry's specific role/contribution to be confirmed before publishing."
+        "Served as backend developer, building the server-side logic behind the assistant.",
+        "Integrated the WhatsApp conversational flow using Twilio's WhatsApp Business API, letting patients interact with the assistant directly over WhatsApp."
       ],
       "results": []
     },
