@@ -1,107 +1,9 @@
-const COLORS = {
-    canvas: '#0A0A0B',
-    surface: '#131316',
-    border: '#2A2A2E',
-    borderStrong: '#3A3A40',
-    primary: '#F4F4F5',
-    muted: '#71717A',
-    faint: '#52525B',
-    accent: '#10B981',
-};
-
-const FONT = "'Geist Mono', ui-monospace, monospace";
-
-interface BoxProps {
-    x: number;
-    y: number;
-    w: number;
-    h: number;
-    title: string;
-    subtitle?: string[];
-    accentBorder?: boolean;
-}
-
-const Box = ({ x, y, w, h, title, subtitle = [], accentBorder }: BoxProps) => (
-    <g>
-        <rect
-            x={x}
-            y={y}
-            width={w}
-            height={h}
-            rx={4}
-            fill={COLORS.surface}
-            stroke={accentBorder ? COLORS.accent : COLORS.border}
-            strokeWidth={1}
-        />
-        <text
-            x={x + w / 2}
-            y={y + (subtitle.length ? 20 : h / 2 + 4)}
-            textAnchor="middle"
-            fontFamily={FONT}
-            fontSize={11}
-            fontWeight={600}
-            fill={COLORS.primary}
-        >
-            {title}
-        </text>
-        {subtitle.map((line, i) => (
-            <text
-                key={i}
-                x={x + w / 2}
-                y={y + 36 + i * 13}
-                textAnchor="middle"
-                fontFamily={FONT}
-                fontSize={9}
-                fill={COLORS.muted}
-            >
-                {line}
-            </text>
-        ))}
-    </g>
-);
-
-interface ArrowProps {
-    x1: number;
-    y1: number;
-    x2: number;
-    y2: number;
-    dashed?: boolean;
-    label?: string;
-}
-
-const Arrow = ({ x1, y1, x2, y2, dashed, label }: ArrowProps) => (
-    <g>
-        <line
-            x1={x1}
-            y1={y1}
-            x2={x2}
-            y2={y2}
-            stroke={COLORS.borderStrong}
-            strokeWidth={1.25}
-            strokeDasharray={dashed ? '3 3' : undefined}
-            markerEnd="url(#tara-arrow)"
-        />
-        {label && (
-            <text
-                x={(x1 + x2) / 2}
-                y={(y1 + y2) / 2 - 6}
-                textAnchor="middle"
-                fontFamily={FONT}
-                fontSize={8.5}
-                fill={COLORS.muted}
-            >
-                {label}
-            </text>
-        )}
-    </g>
-);
+import { Box, Arrow, ArrowMarkers, Note, COLORS, FONT } from './shared';
 
 /**
  * Hand-built architecture diagram for TARA, the pinned/featured project —
  * reflects the actual system described in portfolio.json (execution/process
- * fields), not a generic placeholder. Other project cards use an
- * auto-generated ASCII diagram from their stack; this one project gets a
- * bespoke visual since it's the flagship case study.
+ * fields), not a generic placeholder.
  */
 const TaraDiagram = () => (
     <svg
@@ -110,19 +12,7 @@ const TaraDiagram = () => (
         role="img"
         aria-label="TARA system architecture: client requests flow through the FastAPI backend, which calls QoreID for identity verification, feeds a fraud-detection engine and trust-scoring engine, and persists to an in-memory graph and Postgres."
     >
-        <defs>
-            <marker
-                id="tara-arrow"
-                viewBox="0 0 8 8"
-                refX="7"
-                refY="4"
-                markerWidth="6"
-                markerHeight="6"
-                orient="auto-start-reverse"
-            >
-                <path d="M0,0 L8,4 L0,8 z" fill={COLORS.borderStrong} />
-            </marker>
-        </defs>
+        <ArrowMarkers />
 
         <Box x={90} y={8} w={140} h={34} title="Client / Frontend" />
         <Arrow x1={160} y1={42} x2={160} y2={62} />
@@ -158,16 +48,7 @@ const TaraDiagram = () => (
         <Box x={40} y={298} w={110} h={44} title="In-Memory Graph" subtitle={['detection-speed reads']} />
         <Box x={170} y={298} w={110} h={44} title="PostgreSQL" subtitle={['Aiven · durable store']} />
 
-        <text
-            x={160}
-            y={362}
-            textAnchor="middle"
-            fontFamily={FONT}
-            fontSize={9}
-            fill={COLORS.faint}
-        >
-            dual-layer persistence · BVN-based idempotency
-        </text>
+        <Note x={160} y={362}>dual-layer persistence · BVN-based idempotency</Note>
 
         <rect x={40} y={392} width={240} height={70} rx={4} fill={COLORS.canvas} stroke={COLORS.border} />
         <text x={160} y={410} textAnchor="middle" fontFamily={FONT} fontSize={9} fontWeight={600} fill={COLORS.muted}>

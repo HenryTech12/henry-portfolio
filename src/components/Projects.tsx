@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ComponentType, ReactNode } from 'react';
 import { ExternalLink, Github } from 'lucide-react';
 import portfolio from '../data/portfolio.json';
 import type { PortfolioData, Project } from '../data/portfolio.types';
@@ -7,8 +7,25 @@ import TechBadge from './ui/TechBadge';
 import Reveal from './ui/Reveal';
 import { useGitHubStats } from '../hooks/useGitHubStats';
 import TaraDiagram from './diagrams/TaraDiagram';
+import UltraShortDiagram from './diagrams/UltraShortDiagram';
+import TestbenchDiagram from './diagrams/TestbenchDiagram';
+import XoClashDiagram from './diagrams/XoClashDiagram';
+import MedAssistDiagram from './diagrams/MedAssistDiagram';
+import JobTrackerDiagram from './diagrams/JobTrackerDiagram';
 
 const data = portfolio as PortfolioData;
+
+// Bespoke diagrams, keyed by project slug, built from that project's actual
+// execution/process data. A slug without an entry here falls back to the
+// auto-generated ASCII flow derived from its stack.
+const customDiagrams: Record<string, ComponentType> = {
+    tara: TaraDiagram,
+    ultrashort: UltraShortDiagram,
+    testbench: TestbenchDiagram,
+    'xo-clash': XoClashDiagram,
+    'medassist-ai': MedAssistDiagram,
+    'job-tracker': JobTrackerDiagram,
+};
 
 function buildDiagram(stack: string[]): string {
     const nodes = stack.slice(0, 4);
@@ -41,6 +58,7 @@ const DetailSection = ({ label, defaultOpen, children }: DetailSectionProps) => 
 const ProjectCard = ({ project, index }: { project: Project; index: number }) => {
     const diagram = buildDiagram(project.stack);
     const teaser = getTeaser(project);
+    const CustomDiagram = customDiagrams[project.slug];
 
     return (
         <div
@@ -50,12 +68,12 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                 }`}
         >
             <div className={`${project.pinned ? 'lg:flex lg:items-start' : ''}`}>
-                {project.slug === 'tara' ? (
+                {CustomDiagram ? (
                     <div
                         className={`bg-canvas border-b border-border/60 px-5 py-6 flex items-center justify-center ${project.pinned ? 'lg:w-[42%] lg:border-b-0 lg:border-r lg:sticky lg:top-24' : ''
                             }`}
                     >
-                        <TaraDiagram />
+                        <CustomDiagram />
                     </div>
                 ) : (
                     diagram && (
